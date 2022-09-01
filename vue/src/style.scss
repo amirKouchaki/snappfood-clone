@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+hr {
+    background-color: rgb(234, 231, 231);
+    border: none;
+    height: 1px;
+}
+
+.container {
+    width: min(50em, 95%);
+    margin-inline: auto;
+}
+
+.flex {
+    display: flex;
+}
+.it-center {
+    align-items: center;
+}
+
+.ju-bet {
+    justify-content: space-between;
+}
+
+.ov-hid {
+    overflow: hidden;
+}
