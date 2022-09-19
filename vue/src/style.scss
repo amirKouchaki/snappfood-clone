@@ -1,7 +1,28 @@
+@font-face {
+    font-family: "yekan", Arial;
+    src: local("yekan"), url("/src/fonts/Yekan.ttf") format("truetype");
+}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "yekan" !important;
+    text-decoration: none;
+    &:visited {
+        color: unset;
+    }
+}
+
+ul {
+    list-style: none;
+
+    li {
+        cursor: pointer;
+    }
+}
+
+body {
+    background-color: white;
 }
 
 hr {
@@ -10,8 +31,25 @@ hr {
     height: 1px;
 }
 
+button {
+    cursor: pointer;
+    border: none;
+}
+
+figure {
+    border: none;
+    display: block;
+}
+figcaption {
+    text-align: center;
+}
+
+a {
+    cursor: pointer;
+}
+
 .container {
-    width: min(50em, 95%);
+    width: min(80em, 95%);
     margin-inline: auto;
 }
 

@@ -2,12 +2,8 @@ import axios from "axios";
 import store from "./src/store/index.js";
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8000/api",
-});
-
-axiosClient.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${store.state.user.token}`;
-    return config;
+    baseURL: "http://localhost:8000",
+    withCredentials: true,
 });
 
 export default axiosClient;

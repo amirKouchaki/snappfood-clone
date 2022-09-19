@@ -9,6 +9,7 @@
                         height="1.5em"
                         viewBox="0 0 56 28"
                         fill="none"
+                        class="snapp-logo"
                     >
                         <path
                             d="M51.2573 12.569C50.09 12.5709 49.4104 11.7833 49.4087 10.758C49.407 9.76415 50.084 8.92704 51.2513 8.92505C52.4186 8.92316 53.0983 9.75807 53.0999 10.7518C53.1016 11.7772 52.4246 12.567 51.2573 12.569Z"
@@ -90,22 +91,101 @@
                     </svg>
                 </div>
                 <h2 class="popup-heading">ورود<span>یا</span>عضویت</h2>
-                <form @submit.prevent="SendRegisterEmail" action="#">
+                <form @submit.prevent="sendRegisterEmail" action="#">
                     <p class="form-group">
                         <label class="form-label" for="">ادرس ایمیل</label>
                         <input
+                            autocomplete="off"
                             v-model="email"
                             class="form-input"
                             type="email"
                         />
                     </p>
-                    <button type="submit" class="popup-submit-btn">
+                    <button
+                        type="submit"
+                        class="popup-submit-btn"
+                        :class="{ active: email.length }"
+                    >
                         ادامه
                     </button>
                 </form>
             </div>
-            <div v-else>
-                <h2 class="popup-heading">تایید شماره</h2>
+            <div class="second-page-pass" v-else-if="secondPageWithPass">
+                <div class="pass-register-header">
+                    <span class="editing">ورود با رمز یکبار مصرف</span>
+
+                    <font-awesome-icon
+                        @click="goBackToFirstPage()"
+                        class="back-icon"
+                        icon="angle-right"
+                    />
+                </div>
+                <h2 class="popup-heading">ورود به حساب کاربری</h2>
+
+                <form
+                    autocomplete="off"
+                    @submit.prevent="verifyRegisterWithPass"
+                    action="#"
+                >
+                    <p class="form-group">
+                        <label class="form-label"> رمز عبور </label>
+                        <input
+                            v-model="password"
+                            class="form-input"
+                            type="password"
+                            placeholder=" رمز عبورتان را وارد کنید"
+                        />
+                    </p>
+                    <p class="editing forgot-pass" @click="forgotPassword">
+                        رمز عبورتان را فراموش کرده اید؟
+                    </p>
+                    <button
+                        type="submit"
+                        :class="{ active: password.length >= 8 }"
+                        class="popup-submit-btn"
+                    >
+                        ورود
+                    </button>
+                </form>
+            </div>
+            <div class="second-page-code" v-else>
+                <font-awesome-icon
+                    @click="goBackToFirstPage()"
+                    class="back-icon"
+                    icon="angle-right"
+                />
+                <h2 class="popup-heading">تایید ایمیل</h2>
+
+                <p class="email-check-guide">
+                    کد تأیید به ایمیل <span>{{ email }}</span> فرستاده شد.
+                </p>
+                <span class="editing" @click="editEmail">
+                    <font-awesome-icon icon="edit" />
+                    اصلاح ایمیل
+                </span>
+
+                <form @submit.prevent="verifyRegisterWithCode" action="#">
+                    <p class="form-group">
+                        <input
+                            v-model="verificationCode"
+                            class="form-input"
+                            type="text"
+                        />
+                    </p>
+                    <div class="receive-check">
+                        <p>کد تأیید را دریافت نکردید؟</p>
+                        <span @click="sendRegisterEmail" class="editing"
+                            >ارسال دوباره</span
+                        >
+                    </div>
+                    <button
+                        type="submit"
+                        :class="{ active: verificationCode.length == 8 }"
+                        class="popup-submit-btn"
+                    >
+                        ورود
+                    </button>
+                </form>
             </div>
         </div>
     </section>
@@ -113,24 +193,61 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import axios from "axios";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import axiosClient from "../../axios";
 
 const emit = defineEmits(["closePopUP"]);
 const closePopup = (e) => {};
 const email = ref("");
-const firstPage = ref(false);
+const firstPage = ref(true);
+const secondPageWithPass = ref(false);
+const verificationCode = ref("");
+const password = ref("");
 const store = useStore();
 const router = useRouter();
 
-const SendRegisterEmail = async () => {
+const goBackToFirstPage = () => (firstPage.value = true);
+
+const editEmail = () => {
+    email.value = "";
+    goBackToFirstPage();
+};
+
+const sendRegisterEmail = async () => {
     const res = await store.dispatch("sendRegisterEmail", email.value);
-    if (res.data.success) {
+    if (res.data.success) firstPage.value = false;
+    if (res.data.userPassExists) secondPageWithPass.value = true;
+};
+
+const verifyRegisterWithPass = async () => {
+    const res = await store.dispatch("verifyRegisterWithPass", {
+        email: email.value,
+        password: password.value,
+    });
+
+    if (res.data.loginSuccess) {
+        await router.push({ name: "dashboard" });
     }
 };
+
+const verifyRegisterWithCode = async () => {
+    const res = await store.dispatch("verifyRegisterWithCode", {
+        email: email.value,
+        verification_code: verificationCode.value,
+    });
+    console.log(res);
+
+    if (res.data.loginSuccess) {
+        await router.push({ name: "dashboard" });
+    }
+};
+
+const forgotPassword = () => {};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .popup {
     display: flex;
     align-content: center;
@@ -142,18 +259,21 @@ const SendRegisterEmail = async () => {
     bottom: 0;
     z-index: 1000;
     user-select: none;
-    background-color: rgba($color: #000000, $alpha: 0.15);
+    background-color: rgba($color: #000000, $alpha: 0.35);
     grid-column: auto;
 }
 
 .popup-card {
-    width: min(80%, 20em);
-    aspect-ratio: 1.6;
+    min-width: min(80%, 30em);
+    max-height: fit-content;
+    aspect-ratio: 1.5;
     margin-inline: auto;
     z-index: 1002;
     background-color: white;
-    border-radius: 0.5em;
-    padding: 0.5em 0.7em;
+    border-radius: 0.8em;
+    padding: 0.8em 1.1em;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px,
+        rgba(0, 0, 0, 0.16) 0px 8px 32px;
 }
 
 .popup-header {
@@ -163,7 +283,7 @@ const SendRegisterEmail = async () => {
 }
 
 .popup-heading {
-    font-size: 1.1rem;
+    font-size: 1.8rem;
     text-align: right;
     font-weight: 700;
     direction: rtl;
@@ -176,47 +296,156 @@ const SendRegisterEmail = async () => {
     }
 }
 
+.close-popup {
+    cursor: pointer;
+    scale: 1.3;
+}
+
+.popup-submit-btn {
+    padding-block: 0.45em;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.4rem;
+    background-color: rgb(237, 239, 240);
+    margin-top: 2em;
+    border: none;
+    border-radius: 0.6em;
+    color: rgb(166, 170, 173);
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.85;
+    }
+}
+
+.active {
+    background-color: rgb(255, 0, 166);
+    color: white;
+    transition: all 250ms ease-in-out;
+}
+
+.second-page-code {
+    text-align: right;
+    color: gray;
+    font-size: 0.8em;
+
+    .popup-heading {
+        margin-bottom: 1.5em;
+        font-size: 1.3rem;
+    }
+
+    .popup-submit-btn {
+        margin-top: unset;
+    }
+}
+
+.back-icon {
+    margin-bottom: 0.8em;
+    scale: 1.3;
+    cursor: pointer;
+    color: gray;
+}
+
+.snapp-logo {
+    scale: 1.5;
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+}
+
+.editing {
+    display: block;
+    color: rgb(0, 184, 98);
+    font-size: 1rem;
+    font-weight: bolder;
+    margin-block: 0.5em;
+    padding-inline: 0.2em;
+    direction: rtl;
+    cursor: pointer;
+    svg {
+        margin-left: 0.2em;
+    }
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-top: 1.5em;
+    margin-top: 2.5em;
     .form-label {
         direction: rtl;
-        font-size: 0.65em;
+        font-size: 1.05em;
         font-weight: bold;
         color: rgb(83, 86, 92);
         margin-bottom: 0.5em;
     }
 
     .form-input {
-        padding: 0.7em 0.8em;
+        padding: 0.8em 0.5em;
         border: 1.2px rgba(58, 61, 66, 0.12) solid;
-        border-radius: 0.25em;
+        border-radius: 0.5em;
         color: rgb(58, 61, 66);
         outline: none;
         direction: rtl;
         font-weight: normal;
-        font-size: 0.7rem;
+        font-size: 1rem;
         &:focus {
             border-color: rgba(58, 61, 66, 0.85);
         }
     }
 }
 
-.close-popup {
-    cursor: pointer;
+.receive-check {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1.7em;
+    text-align: center;
+
+    span {
+        display: block;
+    }
+
+    p {
+        color: rgb(74, 75, 75);
+        font-size: 1rem;
+    }
+
+    .editing {
+        margin: unset;
+    }
 }
 
-.popup-submit-btn {
-    padding-block: 0.9em;
-    width: 100%;
-    font-weight: bold;
-    font-size: 0.65rem;
-    background-color: rgb(237, 239, 240);
-    margin-top: 2.2em;
-    border: none;
-    border-radius: 0.3em;
-    color: rgb(166, 170, 173);
-    cursor: pointer;
+.email-check-guide {
+    direction: rtl;
+    font-weight: 500;
+    font-size: 1rem;
+    color: rgb(58, 61, 66);
+    word-spacing: 1.5px;
+    max-width: 50ch;
+    word-break: break-all;
+    span {
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+}
+
+.pass-register-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .back-icon {
+        margin-bottom: unset;
+    }
+}
+
+.forgot-pass {
+    text-align: left;
+    margin-top: 3.5em;
+}
+
+.second-page-pass {
+    .popup-submit-btn {
+        margin-top: 1em;
+    }
 }
 </style>

@@ -15,10 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/user',function () {
+    return auth()->user();
+})->middleware('auth:sanctum');
+
+Route::group(['middleware'=>'auth:sanctum'],function () {
+    Route::post('/logout',[AuthenticationController::class,'logout']);
+
 });
+
 
 Route::controller(AuthenticationController::class)->group(function(){
     Route::post('/register','register');
+    Route::post('/verifyRegisterWithCode','verifyRegisterWithCode');
+    Route::post('/verifyRegisterWithPass','verifyRegisterWithPass');
 });
