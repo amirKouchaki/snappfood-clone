@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <p class="vender-highlight">{{ vender.data.highlight }}</p>
+        <p class="vender-title">{{ vender.data.title }}</p>
         <div class="score-rating">
             <div class="rating">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFCE00">
@@ -188,7 +188,7 @@ fetchVender();
     object-fit: contain;
 }
 
-.vender-highlight {
+.vender-title {
     margin-top: 2em;
     text-align: center;
     font-size: 1.22rem;
