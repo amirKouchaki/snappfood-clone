@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Vender;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Ybazli\Faker\Facades\Faker;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
@@ -18,7 +19,7 @@ class CouponFactory extends Factory
     public function definition()
     {
         return [
-            'body' => $this->faker->paragraph(),
+            'body' => Faker::sentence(),
             'vender_id' => Vender::factory(),
             'expires_at' =>now()->addDays(2)
         ];
