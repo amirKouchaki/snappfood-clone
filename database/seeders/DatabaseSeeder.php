@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             DaySeeder::class,
             VenderTypeSeeder::class,
             VenderSeeder::class,
+            CouponSeeder::class,
         ]);
     }
 }
