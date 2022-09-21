@@ -21,6 +21,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        EmailVerification::factory(10)->create();
+//        EmailVerification::factory(10)->create();
+
+        $this->call([
+            UserSeeder::class,
+            DaySeeder::class,
+            VenderTypeSeeder::class
+        ]);
     }
 }
