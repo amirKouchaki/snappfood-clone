@@ -66,14 +66,25 @@ class Vender extends Model
 
     public static function getAllRatings()
     {
-        return DB::select('SELECT vender_id,AVG(star) AS ratings FROM (SELECT DISTINCT mi.comment_id,mc.vender_id,c.star
-                FROM venders v
+        return DB::select('SELECT vender_id,AVG(star) AS ratings FROM venders v
                 INNER JOIN menu_categories mc ON v.id = mc.vender_id
                 INNER JOIN menu_items i ON mc.id = i.menu_category_id
-                INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id
-                INNER JOIN comments c on c.id = mi.comment_id) vcic
+                INNER JOIN (SELECT MIN(menu_item_id) AS menu_item_id,comment_id FROM comment_menu_item GROUP BY comment_id) mi  ON mi.menu_item_id = i.id
+                INNER JOIN comments c on c.id = mi.comment_id
                 GROUP BY vender_id
-                ORDER BY `vcic`.`vender_id` ASC;');
+                ORDER BY `vender_id` ASC;');
+
+        //unoptimized
+//        SELECT vender_id,AVG(star) AS ratings FROM (SELECT DISTINCT mi.comment_id,mc.vender_id,c.star
+//                FROM venders v
+//                INNER JOIN menu_categories mc ON v.id = mc.vender_id
+//                INNER JOIN menu_items i ON mc.id = i.menu_category_id
+//                INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id
+//                INNER JOIN comments c on c.id = mi.comment_id) vcic
+//                GROUP BY vender_id
+//                ORDER BY `vcic`.`vender_id` ASC;
+
+
     }
 
 

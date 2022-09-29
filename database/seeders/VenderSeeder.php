@@ -16,6 +16,6 @@ class VenderSeeder extends Seeder
      */
     public function run()
     {
-        Vender::factory(17)->create();
+        Vender::factory(20)->create();
     }
 }

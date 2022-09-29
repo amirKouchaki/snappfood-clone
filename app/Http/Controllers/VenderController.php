@@ -16,7 +16,6 @@ class VenderController extends Controller
      */
     public function index()
     {
-//        return new JsonResponse(['venders' => Vender::getAllRatings()]);
         $venderComments = Vender::getAllCommentsCounts();
         $venderRatings = Vender::getAllRatings();
         return new JsonResponse(['venders' => Vender::all()->each(static function ($vender) use($venderComments,$venderRatings){
