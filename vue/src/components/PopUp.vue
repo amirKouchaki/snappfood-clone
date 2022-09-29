@@ -229,6 +229,7 @@ const verifyRegisterWithPass = async () => {
 
     if (res.data.loginSuccess) {
         await router.push({ name: "dashboard" });
+        document.body.classList.remove("ov-hid");
     }
 };
 
@@ -241,6 +242,7 @@ const verifyRegisterWithCode = async () => {
 
     if (res.data.loginSuccess) {
         await router.push({ name: "dashboard" });
+        document.body.classList.remove("ov-hid");
     }
 };
 

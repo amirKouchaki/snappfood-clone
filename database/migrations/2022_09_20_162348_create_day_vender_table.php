@@ -11,12 +11,15 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('menu_item_comment', function (Blueprint $table) {
+        Schema::create('day_vender', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('menu_item_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('comment_id')->constrained()->cascadeOnDelete();
+            $table->time('opens_at');
+            $table->time('closes_at');
+            $table->foreignId('vender_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('day_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_item_comment');
+        Schema::dropIfExists('day_vender');
     }
 };

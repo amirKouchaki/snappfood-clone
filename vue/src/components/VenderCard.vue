@@ -1,7 +1,7 @@
 <template>
-    <a v-for="vender in venders" :key="vender.data.id" class="vendor-card">
-        <div class="vender-coupon" v-if="vender.data.has_coupon">
-            <p class="hello">{{ vender.data.best_coupon }}</p>
+    <a class="vendor-card">
+        <div class="vender-coupon" v-if="vender.has_coupon">
+            <p class="hello">{{ vender.coupons[0].body }}</p>
 
             <svg
                 width="16"
@@ -36,21 +36,17 @@
             </svg>
         </div>
         <div class="bg-wrapper">
-            <img
-                class="vendor-card-bg"
-                :src="vender.data.backgroundImage"
-                alt=""
-            />
+            <img class="vendor-card-bg" :src="vender.background_image" alt="" />
             <div class="featured-wrapper">
                 <img
                     class="vender-card-featured"
-                    :src="vender.data.featured"
+                    :src="vender.title_image"
                     alt=""
                 />
             </div>
         </div>
 
-        <p class="vender-title">{{ vender.data.title }}</p>
+        <p class="vender-title">{{ vender.title }}</p>
         <div class="score-rating">
             <div class="rating">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFCE00">
@@ -60,11 +56,11 @@
                         d="M5.99984 9.62097L2.42572 11.5L3.10832 7.52016L0.216797 4.70163L4.21278 4.12098L5.99984 0.5L7.7869 4.12098L11.7829 4.70163L8.89136 7.52016L9.57395 11.5L5.99984 9.62097Z"
                     ></path>
                 </svg>
-                <span>{{ (vender.data.rating / 2).toFixed(1) }}</span>
+                <span>{{ vender.ratings }}</span>
             </div>
-            <span class="score">(امتیاز{{ vender.data.commentCount }})</span>
+            <span class="score">(امتیاز{{ vender.comment_count }})</span>
         </div>
-        <p class="description">{{ vender.data.description }}</p>
+        <p class="description">{{ vender.description }}</p>
         <button class="delivery">
             <svg
                 width="1.25rem"
@@ -83,29 +79,20 @@
                 ></path>
             </svg>
             <span class="delivery-type">{{
-                vender.data.is_express ? "ارسال اکسپرس" : "پیک فروشنده"
+                vender.is_express ? "ارسال اکسپرس" : "پیک فروشنده"
             }}</span>
             <span class="delivery-fee">{{
-                vender.data.delivery_fee == 0
-                    ? "رایگان"
-                    : vender.data.delivery_fee
+                vender.delivery_fee == 0 ? "رایگان" : vender.delivery_fee
             }}</span
-            ><span v-if="vender.data.delivery_fee !== 0">تومان</span>
+            ><span v-if="vender.delivery_fee !== 0">تومان</span>
         </button>
     </a>
 </template>
 
 <script setup>
 import { ref } from "@vue/reactivity";
-
-const venders = ref({});
-const fetchVender = async () => {
-    const res = await fetch("../../data.json");
-    const data = await res.json();
-    venders.value = data.data.finalResult;
-    console.log(venders.value);
-};
-fetchVender();
+import axiosClient from "../../axios";
+const props = defineProps({ vender: Object });
 </script>
 
 <style lang="scss" scoped>
@@ -114,7 +101,6 @@ fetchVender();
     border-radius: 0.5em;
     overflow: hidden;
     min-width: 15em;
-    flex-grow: 1;
     border: 1px solid rgba(58, 61, 66, 0.06);
     direction: rtl;
     text-align: center;
@@ -174,6 +160,8 @@ fetchVender();
     right: 0;
     margin-inline: auto;
     transform: translateY(25%);
+    box-shadow: rgba(58, 61, 66, 0.06) 0px 1px 0px,
+        rgba(0, 0, 0, 0.3) 0px 8px 32px -16px;
     border: 4px solid white;
     border-radius: 0.8em;
     width: 90px;
@@ -219,6 +207,7 @@ fetchVender();
 
 .description {
     margin-bottom: 3.5em;
+    padding-inline: 0.5em;
 }
 
 .rating {
@@ -252,7 +241,13 @@ fetchVender();
 @media (min-width: 35em) {
     .vendor-card {
         flex-basis: 44%;
-        width: 14em;
+        max-width: calc(50% - 2em);
+    }
+}
+
+@media (min-width: 44) {
+    .vendor-card {
+        max-width: unset;
     }
 }
 @media (min-width: 80em) {

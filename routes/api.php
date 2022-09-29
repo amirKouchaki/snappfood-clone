@@ -30,3 +30,7 @@ Route::controller(AuthenticationController::class)->group(function(){
     Route::post('/verifyRegisterWithCode','verifyRegisterWithCode');
     Route::post('/verifyRegisterWithPass','verifyRegisterWithPass');
 });
+
+Route::controller(\App\Http\Controllers\VenderController::class)->group(function(){
+    Route::get('/venders','index');
+});

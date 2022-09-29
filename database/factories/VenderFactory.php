@@ -29,7 +29,7 @@ class VenderFactory extends Factory
             'is_express' => $this->faker->boolean(),
             'is_economical' => $this->faker->boolean(),
             'delivery_fee' => $this->faker->numberBetween(10000,50000),
-            'vender_type_id' => $this->faker->numberBetween(1,10)
+            'vender_type_id' => $this->faker->numberBetween(1,10),
         ];
     }
 }

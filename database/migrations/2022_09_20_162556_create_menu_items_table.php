@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
-            $table->string('title',30);
-            $table->string('description',255);
+            $table->string('title',50);
+            $table->longText('description');
             $table->unsignedBigInteger('price');
-            $table->unsignedTinyInteger('off')->default(0);
+            $table->unsignedTinyInteger('discount')->default(0);
             $table->unsignedInteger('in_stock');
             $table->foreignId('menu_category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Vender;
-use Database\Factories\VenderFactory;
+use App\Models\Comment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class VenderSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +15,6 @@ class VenderSeeder extends Seeder
      */
     public function run()
     {
-        Vender::factory(17)->create();
+//        Comment::factory(10)->create();
     }
 }

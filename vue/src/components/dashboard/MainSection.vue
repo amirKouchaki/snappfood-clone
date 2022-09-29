@@ -1,7 +1,11 @@
 <template>
     <section class="main-section container">
         <section class="search-results">
-            <vender-card />
+            <vender-card
+                v-for="vender in venders"
+                :vender="vender"
+                :key="vender.id"
+            />
         </section>
         <aside class="filters">
             <div class="aside-card">
@@ -40,6 +44,8 @@
 import PriceFilter from "./PriceFilter.vue";
 import SpecialFilter from "./SpecialFilter.vue";
 import VenderCard from "../VenderCard.vue";
+import { ref } from "@vue/reactivity";
+import axiosClient from "../../../axios";
 const categoriesAssetsLink = (file) => {
     const categories = "src/assets/images/categories/";
     return categories + file;
@@ -52,6 +58,14 @@ const categories = [
     { src: "daryayi.png", caption: "دریایی" },
     { src: "sooshi.png", caption: "بین‌الملل" },
 ];
+
+const venders = ref({});
+const fetchVender = async () => {
+    const res = await axiosClient.get("api/venders");
+    venders.value = res.data.venders;
+    console.log(res.data.venders);
+};
+fetchVender();
 </script>
 
 <style lang="scss" scoped>
@@ -66,6 +80,7 @@ const categories = [
     flex-wrap: wrap;
     gap: 2em;
     justify-content: left;
+    overflow: hidden;
 }
 
 .filters {
@@ -126,7 +141,7 @@ const categories = [
     font-size: 0.92rem;
 }
 
-@media (max-width: 40em) {
+@media (max-width: 36em) {
     .main-section {
         flex-direction: column-reverse;
     }

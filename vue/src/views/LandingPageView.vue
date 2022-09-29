@@ -120,7 +120,7 @@
             </header>
             <img
                 class="hero-img"
-                src="../assets/images/hero-image.png"
+                src="../assets/hero-image.png"
                 alt="hero-image"
             />
             <h1 class="heading-1" dir="rtl">سفارش انلاین <span>غذا</span></h1>

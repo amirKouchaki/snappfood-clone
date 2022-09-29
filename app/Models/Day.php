@@ -10,4 +10,9 @@ class Day extends Model
     use HasFactory;
 
         public $timestamps = false;
+
+
+    public function vendersOpenIN(){
+        return $this->belongsToMany(Vender::class,foreignPivotKey: 'vender_id');
+    }
 }

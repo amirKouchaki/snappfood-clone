@@ -111,7 +111,7 @@ class AuthenticationController extends Controller
         if(!$user->hasPassword()) {
             return new JsonResponse(['loginSuccess' => false,'errors' => ['No password found for this user.']], 422);
         }
-
+        //makes unnecessary sql query to get the user again
         if(!Auth::attempt(['email' => $email,'password' => $password ])){
             return  new JsonResponse(['loginSuccess' => false,'errors' => ['Password is not valid.']],422);
         }

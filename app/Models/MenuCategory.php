@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class MenuCategory extends Model
 {
     use HasFactory;
+
+
+
+    public function menuItems(){
+        return $this->hasMany(MenuItem::class);
+    }
 }
