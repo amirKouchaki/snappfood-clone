@@ -100,7 +100,6 @@ const props = defineProps({ vender: Object });
     position: relative;
     border-radius: 0.5em;
     overflow: hidden;
-    min-width: 15em;
     border: 1px solid rgba(58, 61, 66, 0.06);
     direction: rtl;
     text-align: center;
@@ -149,7 +148,7 @@ const props = defineProps({ vender: Object });
 
 .bg-wrapper {
     position: relative;
-    aspect-ratio: 2;
+    aspect-ratio: 1.9;
     flex-grow: 1;
 }
 
@@ -164,7 +163,7 @@ const props = defineProps({ vender: Object });
         rgba(0, 0, 0, 0.3) 0px 8px 32px -16px;
     border: 4px solid white;
     border-radius: 0.8em;
-    width: 90px;
+    width: 85px;
     background-color: white;
     aspect-ratio: 1;
     overflow: hidden;
@@ -206,7 +205,7 @@ const props = defineProps({ vender: Object });
 }
 
 .description {
-    margin-bottom: 3.5em;
+    margin-bottom: 2em;
     padding-inline: 0.5em;
 }
 
@@ -236,24 +235,5 @@ const props = defineProps({ vender: Object });
 
 .delivery-fee {
     margin-left: 0.3em;
-}
-
-@media (min-width: 35em) {
-    .vendor-card {
-        flex-basis: 44%;
-        max-width: calc(50% - 2em);
-    }
-}
-
-@media (min-width: 44) {
-    .vendor-card {
-        max-width: unset;
-    }
-}
-@media (min-width: 80em) {
-    .vendor-card {
-        flex-basis: 30%;
-        max-width: 30%;
-    }
 }
 </style>

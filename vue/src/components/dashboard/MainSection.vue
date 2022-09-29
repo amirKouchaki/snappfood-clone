@@ -1,12 +1,6 @@
 <template>
     <section class="main-section container">
-        <section class="search-results">
-            <vender-card
-                v-for="vender in venders"
-                :vender="vender"
-                :key="vender.id"
-            />
-        </section>
+        <vender-cards :venders="venders" />
         <aside class="filters">
             <div class="aside-card">
                 <h2 class="categories-heading">همه دسته‌بندی‌ها</h2>
@@ -43,7 +37,7 @@
 <script setup>
 import PriceFilter from "./PriceFilter.vue";
 import SpecialFilter from "./SpecialFilter.vue";
-import VenderCard from "../VenderCard.vue";
+import VenderCards from "./VenderCards.vue";
 import { ref } from "@vue/reactivity";
 import axiosClient from "../../../axios";
 const categoriesAssetsLink = (file) => {
@@ -73,14 +67,6 @@ fetchVender();
     margin-top: 5em;
     display: flex;
     gap: 1em;
-}
-
-.search-results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2em;
-    justify-content: left;
-    overflow: hidden;
 }
 
 .filters {
@@ -141,9 +127,11 @@ fetchVender();
     font-size: 0.92rem;
 }
 
-@media (max-width: 36em) {
+@media (max-width: 42em) {
     .main-section {
         flex-direction: column-reverse;
+        padding: 1.5em 3em;
+        margin-top: unset;
     }
 
     .filters {
