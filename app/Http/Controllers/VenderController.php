@@ -18,7 +18,7 @@ class VenderController extends Controller
     {
         $venderComments = Vender::getAllCommentsCounts();
         $venderRatings = Vender::getAllRatings();
-        return new JsonResponse(['venders' => Vender::all()->each(static function ($vender) use($venderComments,$venderRatings){
+        return new JsonResponse(['venders' => Vender::with('venderType')->get()->each(static function ($vender) use($venderComments,$venderRatings){
             $vender->comment_count = number_format($venderComments[$vender->id - 1]->comment_count);
             $vender->ratings = number_format($venderRatings[$vender->id - 1]->ratings,1);
         })]);

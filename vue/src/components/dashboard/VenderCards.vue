@@ -15,14 +15,15 @@ const props = defineProps({ venders: Array });
 </script>
 
 <style lang="scss" scoped>
+@use "../../abstracts" as *;
 // move other media queries to the top of the page
-@media (min-width: 60em) {
+@media (min-width: $md-view) {
     .vender-cards {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (min-width: 80em) {
+@media (min-width: $lg-view) {
     .vender-cards {
         grid-template-columns: repeat(3, 1fr);
     }

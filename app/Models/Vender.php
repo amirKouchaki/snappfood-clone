@@ -41,6 +41,10 @@ class Vender extends Model
             ->withPivot(['opens_at', 'closes_at']);
     }
 
+    public function venderType(){
+        return $this->belongsTo(VenderType::class);
+    }
+
     public function commentCount()
     {
         //TODO: merge with menu

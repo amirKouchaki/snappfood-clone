@@ -57,12 +57,13 @@ const venders = ref({});
 const fetchVender = async () => {
     const res = await axiosClient.get("api/venders");
     venders.value = res.data.venders;
-    console.log(res.data.venders);
+    console.log(res.data);
 };
 fetchVender();
 </script>
 
 <style lang="scss" scoped>
+@use "../../abstracts" as *;
 .main-section {
     margin-top: 5em;
     display: flex;
@@ -127,15 +128,16 @@ fetchVender();
     font-size: 0.92rem;
 }
 
-@media (max-width: 42em) {
+@media (max-width: $sm-view) {
     .main-section {
         flex-direction: column-reverse;
-        padding: 1.5em 3em;
+        padding: 1.5em;
         margin-top: unset;
     }
 
     .filters {
         position: static;
+        min-width: unset;
     }
 }
 </style>

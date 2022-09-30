@@ -1,9 +1,10 @@
 <template>
+    <auth-header />
     <RouterView />
 </template>
 
-<script>
-export default {};
+<script setup>
+import AuthHeader from "../components/auth/AuthHeader.vue";
 </script>
 
-<style></style>
+<style lang="scss"></style>
