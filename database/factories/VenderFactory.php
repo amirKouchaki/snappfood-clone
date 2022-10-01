@@ -22,8 +22,8 @@ class VenderFactory extends Factory
 
         return [
             'title' => Faker::jobTitle(),
-            'title_image' => $this->faker->imageUrl(600,600),
-            'background_image' => $this->faker->imageURl(600,600),
+            'title_image' => $this->faker->imageUrl(400,400),
+            'background_image' => $this->faker->imageURl(400,400),
             'description' => Faker::sentence(),
             'address' => Faker::address(),
             'is_express' => $this->faker->boolean(),

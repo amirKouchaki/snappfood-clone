@@ -165,14 +165,16 @@
             <service-list />
         </div>
     </section>
-
-    <pop-up v-if="showPopup" @closePopup="closePopup"></pop-up>
+    <pop-up v-if="showPopup" @closePopup="closePopup" v-slot="slotProps">
+        <auth-popup :closePopup="slotProps.closePopup" />
+    </pop-up>
 </template>
 
 <script setup>
 import { ref } from "@vue/reactivity";
 import popUp from "../components/PopUp.vue";
 import ServiceList from "../components/ServiceList.vue";
+import AuthPopup from "../components/popups/AuthPopup.vue";
 
 const showPopup = ref(false);
 

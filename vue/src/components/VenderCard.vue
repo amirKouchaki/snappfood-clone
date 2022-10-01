@@ -148,8 +148,10 @@ const props = defineProps({ vender: Object });
 
 .bg-wrapper {
     position: relative;
+    width: 100%;
     aspect-ratio: 1.9;
     flex-grow: 1;
+    max-height: 11em;
 }
 
 .featured-wrapper {

@@ -75,6 +75,7 @@ fetchVender();
     top: 13em;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     gap: 0.6em;
     height: fit-content;
     min-width: 20em;

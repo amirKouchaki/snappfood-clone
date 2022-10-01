@@ -20,7 +20,7 @@
                     </svg>
                 </button>
                 <svg
-                    @click="openPopup()"
+                    @click="openRegisterPopup()"
                     class="register-icon"
                     width="14"
                     height="18"
@@ -45,7 +45,7 @@
                     ></path>
                 </svg>
             </div>
-            <div dir="rtl" class="search-bar">
+            <div dir="rtl" class="search-bar" @click="openSearchPopup()">
                 <svg
                     class="search-icon"
                     width="17"
@@ -139,10 +139,27 @@
         <hr />
         <service-list />
     </header>
+    <pop-up v-if="showSearchPopup">
+        <search-popup />
+    </pop-up>
 </template>
 
 <script setup>
 import ServiceList from "../ServiceList.vue";
+import PopUp from "../PopUp.vue";
+import SearchPopup from "../popups/SearchPopup.vue";
+import { ref } from "@vue/reactivity";
+const showSearchPopup = ref(false);
+const showRegisterPopup = ref(false);
+const openSearchPopup = () => {
+    showSearchPopup.value = true;
+    document.body.classList.add("ov-hid");
+};
+
+const openRegisterPopup = () => {
+    showRegisterPopup.value = true;
+    document.body.classList.add("ov-hid");
+};
 </script>
 
 <style lang="scss" scoped>
