@@ -63,8 +63,6 @@
         <p class="description">{{ vender.description }}</p>
         <button class="delivery">
             <svg
-                width="1.25rem"
-                height="1.25rem"
                 viewBox="0 0 20 20"
                 fill="#676A70"
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,9 +101,12 @@ const props = defineProps({ vender: Object });
     border: 1px solid rgba(58, 61, 66, 0.06);
     direction: rtl;
     text-align: center;
+    box-shadow: rgba(58, 61, 66, 0.06) 0px 1px 0px,
+        rgba(0, 0, 0, 0.05) 0px 2px 8px -2px;
     &:hover {
         box-shadow: rgba(58, 61, 66, 0.06) 0px 1px 0px,
-            rgba(0, 0, 0, 0.05) 0px 2px 8px -2px;
+            rgba(0, 0, 0, 0.3) 0px 8px 32px -16px;
+        transition: all 0.2s;
     }
 }
 
@@ -228,6 +229,8 @@ const props = defineProps({ vender: Object });
         rgba(0, 0, 0, 0.05) 0px 2px 8px -2px;
     svg {
         transform: translateY(25%);
+        width: 1.25em;
+        aspect-ratio: 1;
     }
 }
 

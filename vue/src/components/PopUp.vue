@@ -1,7 +1,7 @@
 <template>
-    <section class="popup">
+    <aside class="popup">
         <slot :closePopup="closePopup"></slot>
-    </section>
+    </aside>
 </template>
 
 <script setup>
@@ -21,7 +21,7 @@ const closePopup = () => {
     right: 0;
     bottom: 0;
     z-index: 1000;
-    background-color: rgba($color: #000000, $alpha: 0.35);
+    background-color: rgba($color: #000000, $alpha: 0.3);
     grid-column: auto;
     user-select: none;
 }

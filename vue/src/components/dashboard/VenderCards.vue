@@ -11,7 +11,7 @@
 <script setup>
 import VenderCard from "../VenderCard.vue";
 
-const props = defineProps({ venders: Array });
+const props = defineProps(["venders"]);
 </script>
 
 <style lang="scss" scoped>
