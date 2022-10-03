@@ -172,7 +172,7 @@ import RegisterPopup from "../popups/RegisterPopup.vue";
 import OrdersPopup from "../popups/OrdersPopup.vue";
 const showSearchPopup = ref(false);
 const showRegisterPopup = ref(false);
-const showOrdersPopup = ref(true);
+const showOrdersPopup = ref(false);
 const openSearchPopup = () => {
     showSearchPopup.value = true;
     document.body.classList.add("ov-hid");

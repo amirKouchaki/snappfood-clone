@@ -106,7 +106,8 @@ const props = defineProps({ vender: Object });
     &:hover {
         box-shadow: rgba(58, 61, 66, 0.06) 0px 1px 0px,
             rgba(0, 0, 0, 0.3) 0px 8px 32px -16px;
-        transition: all 0.2s;
+        scale: 1.01;
+        transition: all 0.1s ease-in-out;
     }
 }
 

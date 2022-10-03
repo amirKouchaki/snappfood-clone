@@ -42,8 +42,10 @@ document.addEventListener("click", (e) => {
 <style lang="scss" scoped>
 @use "../../abstracts" as *;
 .popup-card.search-bar {
+    display: flex;
     margin-top: 0.78em;
     background-color: rgba(white, 1);
+    animation: appear 0.3s both;
 }
 
 .search-bar {
@@ -62,5 +64,15 @@ document.addEventListener("click", (e) => {
 
 .search-icon {
     scale: 1.1;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100%;
+    }
 }
 </style>

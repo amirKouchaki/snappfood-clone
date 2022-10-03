@@ -1,6 +1,6 @@
 <template>
     <section class="popup-card" ref="modal">
-        <h2 class="order-popup-heading">سفارش های پیشین</h2>
+        <h2 class="order-popup-heading">سفارش‌های پیشین</h2>
         <div class="orders-list">
             <article class="order" v-for="one in four" :key="one">
                 <div class="order-main-wrapper">
@@ -73,12 +73,15 @@ document.addEventListener("click", (e) => {
 </script>
 
 <style lang="scss" scoped>
+@use "../../abstracts" as *;
 .popup-card {
     transition: all 0.3s;
     width: 27em;
     background: rgba(white, 1);
     animation: left-to-right 0.27s ease-in-out both;
     padding: 1em 0.7em;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px,
+        rgba(0, 0, 0, 0.16) 0px 8px 32px;
 }
 
 .order-popup-heading {
@@ -120,6 +123,10 @@ document.addEventListener("click", (e) => {
     direction: rtl;
     margin-right: -0.1em;
     margin-bottom: 0.2em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 25ch;
 }
 
 .order-time {
@@ -148,11 +155,26 @@ document.addEventListener("click", (e) => {
     padding: 0.6em 1em;
     flex: 1 1 50%;
     color: rgb(58, 61, 66);
-    border: 0.09375rem solid rgba(58, 61, 66, 0.06);
+    background-color: rgba(58, 61, 66, 0.06);
     border-radius: 0.4rem;
     transition: all 0.17s ease-in-out;
     font-weight: bold;
     font-size: 1rem;
+
+    &:hover {
+        background-color: rgba(58, 61, 66, 0.12);
+        color: rgb(24, 27, 31);
+    }
+}
+
+@media (max-width: $sm-view) {
+    .popup-card {
+        width: 20em;
+    }
+
+    .order-btn {
+        font-size: 0.9rem;
+    }
 }
 
 @keyframes left-to-right {
