@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('star');
             //TODO: add user_id to comment
             $table->timestamps();
+
+            $table->index('id');
         });
     }
 

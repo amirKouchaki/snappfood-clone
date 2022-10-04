@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('body',255);
             $table->foreignId('vender_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->index('id');
         });
     }
 

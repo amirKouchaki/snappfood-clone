@@ -22,6 +22,9 @@ return new class extends Migration
             $table->unsignedInteger('in_stock');
             $table->foreignId('menu_category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+
+            $table->index('id');
         });
     }
 

@@ -56,9 +56,9 @@
                         d="M5.99984 9.62097L2.42572 11.5L3.10832 7.52016L0.216797 4.70163L4.21278 4.12098L5.99984 0.5L7.7869 4.12098L11.7829 4.70163L8.89136 7.52016L9.57395 11.5L5.99984 9.62097Z"
                     ></path>
                 </svg>
-                <span>{{ vender.ratings }}</span>
+                <span>{{ vender.average_ratings }}</span>
             </div>
-            <span class="score">(امتیاز{{ vender.comment_count }})</span>
+            <span class="score">(امتیاز{{ vender.total_ratings }})</span>
         </div>
         <p class="description">{{ vender.description }}</p>
         <button class="delivery">
@@ -103,6 +103,7 @@ const props = defineProps({ vender: Object });
     text-align: center;
     box-shadow: rgba(58, 61, 66, 0.06) 0px 1px 0px,
         rgba(0, 0, 0, 0.05) 0px 2px 8px -2px;
+    height: fit-content;
     &:hover {
         box-shadow: rgba(58, 61, 66, 0.06) 0px 1px 0px,
             rgba(0, 0, 0, 0.3) 0px 8px 32px -16px;

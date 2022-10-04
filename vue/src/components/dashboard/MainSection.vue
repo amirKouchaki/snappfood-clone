@@ -37,9 +37,12 @@
 <script setup>
 import PriceFilter from "./PriceFilter.vue";
 import SpecialFilter from "./SpecialFilter.vue";
+import { watch } from "@vue/runtime-core";
 import VenderCards from "./VenderCards.vue";
 import { ref } from "@vue/reactivity";
 import axiosClient from "../../../axios";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const categoriesAssetsLink = (file) => {
     const categories = "src/assets/images/categories/";
     return categories + file;
@@ -54,12 +57,19 @@ const categories = [
 ];
 
 const venders = ref({});
-const fetchVender = async () => {
-    const res = await axiosClient.get("api/venders");
+const fetchVender = async (params) => {
+    const res = await axiosClient.get("api/venders", { params });
     venders.value = res.data.venders;
     console.log(res.data);
 };
-fetchVender();
+fetchVender(route.query);
+
+watch(
+    () => route.query,
+    (toQuery, previousQuery) => {
+        fetchVender(toQuery);
+    }
+);
 </script>
 
 <style lang="scss" scoped>

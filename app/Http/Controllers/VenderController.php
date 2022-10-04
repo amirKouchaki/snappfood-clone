@@ -12,16 +12,28 @@ class VenderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return array
      */
     public function index()
     {
-        $venderComments = Vender::getAllCommentsCounts();
-        $venderRatings = Vender::getAllRatings();
-        return new JsonResponse(['venders' => Vender::with('venderType')->get()->each(static function ($vender) use($venderComments,$venderRatings){
-            $vender->comment_count = number_format($venderComments[$vender->id - 1]->comment_count);
-            $vender->ratings = number_format($venderRatings[$vender->id - 1]->ratings,1);
-        })]);
+//        $venderComments = Vender::getAllCommentsCounts();
+//        $venderRatings = Vender::getAllRatings();
+//        return new JsonResponse(['venders' => Vender::with('venderType')->get()->each(static function ($vender) use($venderComments,$venderRatings){
+//            $vender->comment_count = number_format($venderComments[$vender->id - 1]->comment_count);
+//            $vender->ratings = number_format($venderRatings[$vender->id - 1]->ratings,1);
+//        })]);
+        $limit = 15;
+        $venders = Vender::where('vender_type_id',\request('type'))->paginate($limit);
+
+        $venderIds = array_column($venders->toArray()['data'],'id');
+        $venderRatings = [];
+        if($venderIds)
+           $venderRatings = Vender::getAllRatings($venderIds);
+
+        return ['venders' => $venders->each( static function ($vender,$index)  use ($venderRatings){
+            $vender->total_ratings = $venderRatings[$index]->total_ratings;
+            $vender->average_ratings = $venderRatings[$index]->average_ratings;
+        })];
     }
 
     /**

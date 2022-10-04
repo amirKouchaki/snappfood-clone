@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('days', function (Blueprint $table) {
             $table->id();
             $table->string('name',15);
+
+
+            $table->index('id');
         });
     }
 

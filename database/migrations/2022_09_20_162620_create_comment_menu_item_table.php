@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('menu_item_id')->constrained()->cascadeOnDelete();
             $table->foreignId('comment_id')->constrained()->cascadeOnDelete();
+
+            $table->index(['menu_item_id','comment_id']);
         });
     }
 

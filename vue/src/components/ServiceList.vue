@@ -1,32 +1,38 @@
 <template>
     <nav v-if="serviceList.length" class="service-list">
-        <a v-for="service in serviceList" :key="service.caption">
+        <router-link
+            v-for="service in serviceList"
+            :key="service.id"
+            :to="{ name: 'dashboard', query: { type: service.id } }"
+        >
             <figure>
                 <img :src="serviceAssetLink(service.src)" alt="" />
                 <figcaption class="service-caption">
                     {{ service.caption }}
                 </figcaption>
             </figure>
-        </a>
+        </router-link>
     </nav>
 </template>
 
 <script setup>
+import { useRoute } from "vue-router";
+const route = useRoute();
 const serviceAssetLink = (file) => {
     const serviceAsset = "src/assets/images/service-list/";
     return serviceAsset.concat(file);
 };
 const serviceList = [
-    { src: "restaurant.png", caption: "رستوران" },
-    { src: "supermarket.png", caption: "سوپرمارکت" },
-    { src: "cafe.png", caption: "کافه" },
-    { src: "shirini.png", caption: "شیرینی" },
-    { src: "noon.png", caption: "نون" },
-    { src: "fruit.png", caption: "میوه" },
-    { src: "protein.png", caption: "پروتئین" },
-    { src: "bastani.png", caption: "ابمیوه بستنی" },
-    { src: "ajil.png", caption: "آجیل" },
-    { src: "etc.png", caption: "سایر" },
+    { id: 1, src: "restaurant.png", caption: "رستوران" },
+    { id: 2, src: "supermarket.png", caption: "سوپرمارکت" },
+    { id: 3, src: "cafe.png", caption: "کافه" },
+    { id: 4, src: "shirini.png", caption: "شیرینی" },
+    { id: 5, src: "noon.png", caption: "نون" },
+    { id: 6, src: "fruit.png", caption: "میوه" },
+    { id: 7, src: "protein.png", caption: "پروتئین" },
+    { id: 8, src: "bastani.png", caption: "ابمیوه بستنی" },
+    { id: 9, src: "ajil.png", caption: "آجیل" },
+    { id: 10, src: "etc.png", caption: "سایر" },
 ];
 </script>
 

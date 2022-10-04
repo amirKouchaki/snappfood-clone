@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Vender extends Model
 {
@@ -41,7 +42,8 @@ class Vender extends Model
             ->withPivot(['opens_at', 'closes_at']);
     }
 
-    public function venderType(){
+    public function venderType()
+    {
         return $this->belongsTo(VenderType::class);
     }
 
@@ -68,17 +70,57 @@ class Vender extends Model
                 GROUP BY vender_id;');
     }
 
-    public static function getAllRatings()
+    public static function getAllRatings($vender_ids = [])
     {
-        return DB::select('SELECT vender_id,AVG(star) AS ratings FROM venders v
+        return DB::select("SELECT vender_id,SUM(star) AS total_ratings,AVG(star) AS average_ratings FROM (SELECT  DISTINCT (mi.comment_id) as comment_id,v.id as vender_id ,c.star
+                FROM venders v
                 INNER JOIN menu_categories mc ON v.id = mc.vender_id
                 INNER JOIN menu_items i ON mc.id = i.menu_category_id
-                INNER JOIN (SELECT MIN(menu_item_id) AS menu_item_id,comment_id FROM comment_menu_item GROUP BY comment_id) mi  ON mi.menu_item_id = i.id
-                INNER JOIN comments c on c.id = mi.comment_id
+                INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id
+                INNER JOIN comments c ON c.id = mi.comment_id) vci
+                WHERE vender_id IN (" . implode(',', $vender_ids) . ")
                 GROUP BY vender_id
-                ORDER BY `vender_id` ASC;');
+        ORDER BY vci.vender_id  ASC");
 
-        //unoptimized
+    }
+
+//        SELECT
+//    COUNT(DISTINCT comment_id) AS comment_count,
+//    vci.id AS vender_id,
+//    vci.title,
+//    vci.title_image,
+//    vci.background_image,
+//    vci.description,
+//    vci.address,
+//    vci.is_express,
+//    vci.is_economical,
+//    vci.delivery_fee,
+//    vci.vender_type_id,
+//    vci.created_at,
+//    vci.updated_at
+//FROM
+//(
+//    SELECT
+//        v.*,
+//        mc.id AS menu_category_id,
+//        i.id AS menu_item_id,
+//        mi.comment_id
+//    FROM
+//        venders v
+//    INNER JOIN menu_categories mc ON
+//        v.id = mc.vender_id
+//    INNER JOIN menu_items i ON
+//        mc.id = i.menu_category_id
+//    INNER JOIN comment_menu_item mi ON
+//        mi.menu_item_id = i.id
+//) vci
+//GROUP BY
+//    vci.id
+//ORDER BY
+//    'vender_id` ASC;
+
+
+    //unoptimized
 //        SELECT vender_id,AVG(star) AS ratings FROM (SELECT DISTINCT mi.comment_id,mc.vender_id,c.star
 //                FROM venders v
 //                INNER JOIN menu_categories mc ON v.id = mc.vender_id
@@ -89,7 +131,14 @@ class Vender extends Model
 //                ORDER BY `vcic`.`vender_id` ASC;
 
 
-    }
+    // more optimized
+//        SELECT vender_id,AVG(star) AS ratings FROM venders v
+//                INNER JOIN menu_categories mc ON v.id = mc.vender_id
+//                INNER JOIN menu_items i ON mc.id = i.menu_category_id
+//                INNER JOIN (SELECT MIN(menu_item_id) AS menu_item_id,comment_id FROM comment_menu_item GROUP BY comment_id) mi  ON mi.menu_item_id = i.id
+//                INNER JOIN comments c on c.id = mi.comment_id
+//                GROUP BY vender_id
+//                ORDER BY `vender_id` ASC;
 
 
 }

@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('vender_types', function (Blueprint $table) {
             $table->id();
             $table->string('type','50');
+
+            $table->index('id');
         });
     }
 
