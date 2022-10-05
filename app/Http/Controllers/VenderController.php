@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexDashboardRequest;
 use App\Models\Vender;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,16 +15,12 @@ class VenderController extends Controller
      *
      * @return array
      */
-    public function index()
+    public function index(IndexDashboardRequest $request)
     {
-//        $venderComments = Vender::getAllCommentsCounts();
-//        $venderRatings = Vender::getAllRatings();
-//        return new JsonResponse(['venders' => Vender::with('venderType')->get()->each(static function ($vender) use($venderComments,$venderRatings){
-//            $vender->comment_count = number_format($venderComments[$vender->id - 1]->comment_count);
-//            $vender->ratings = number_format($venderRatings[$vender->id - 1]->ratings,1);
-//        })]);
-        $limit = 15;
-        $venders = Vender::where('vender_type_id',\request('type'))->paginate($limit);
+//        dd($request['type']);
+        $filters = $request->validated();
+        $limit = 20;
+        $venders = Vender::filter($filters)->paginate($limit);
 
         $venderIds = array_column($venders->toArray()['data'],'id');
         $venderRatings = [];

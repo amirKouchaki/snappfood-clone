@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
-            $table->longText('body');
-            $table->unsignedInteger('user_rating');
-            //TODO: add user_id to comment
+            $table->string('name',50);
+            $table->string('image',255);
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
             $table->index('id');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('sub_categories');
     }
 };

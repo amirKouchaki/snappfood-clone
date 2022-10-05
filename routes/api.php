@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +34,8 @@ Route::controller(AuthenticationController::class)->group(function(){
 
 Route::controller(\App\Http\Controllers\VenderController::class)->group(function(){
     Route::get('/venders','index');
+});
+
+Route::get('categories',function () {
+    return ['categories' => Category::all()];
 });

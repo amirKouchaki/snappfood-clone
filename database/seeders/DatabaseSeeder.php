@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use App\Models\EmailVerification;
 use App\Models\MenuCategory;
 use App\Models\MenuItem;
@@ -17,17 +18,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            UserSeeder::class,
-            DaySeeder::class,
-            VenderTypeSeeder::class,
-            VenderSeeder::class,
-            DayVenderSeeder::class,
-            CouponSeeder::class,
-            CommentSeeder::class,
-            MenuCategorySeeder::class,
-            MenuItemSeeder::class,
-            CommentMenuItemSeeder::class
-        ]);
+//        $this->call([
+//            UserSeeder::class,
+//            DaySeeder::class,
+//            VenderTypeSeeder::class,
+//            VenderSeeder::class,
+//            DayVenderSeeder::class,
+//            CouponSeeder::class,
+//            CommentSeeder::class,
+//            MenuCategorySeeder::class,
+//            MenuItemSeeder::class,
+//            CommentMenuItemSeeder::class,
+//            CategorySeeder::class
+//        ]);
+
+        $this->call([CategorySeeder::class]);
     }
 }

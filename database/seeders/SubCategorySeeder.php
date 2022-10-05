@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Vender;
-use Database\Factories\VenderFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class VenderSeeder extends Seeder
+class SubCategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +14,6 @@ class VenderSeeder extends Seeder
      */
     public function run()
     {
-        Vender::factory(200)->create();
+        //
     }
 }

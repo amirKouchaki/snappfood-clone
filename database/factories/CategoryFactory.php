@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Ybazli\Faker\Facades\Faker;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class CommentFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,8 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'body' => Faker::paragraph(),
-            'user_rating' => $this->faker->numberBetween(0,5),
+            'name' => Faker::word(),
+            'image' => $this->faker->imageUrl()
         ];
     }
 }

@@ -72,15 +72,16 @@ class Vender extends Model
 
     public static function getAllRatings($vender_ids = [])
     {
-        return DB::select("SELECT vender_id,SUM(star) AS total_ratings,AVG(star) AS average_ratings FROM (SELECT  DISTINCT (mi.comment_id) as comment_id,v.id as vender_id ,c.star
-                FROM venders v
-                INNER JOIN menu_categories mc ON v.id = mc.vender_id
-                INNER JOIN menu_items i ON mc.id = i.menu_category_id
-                INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id
-                INNER JOIN comments c ON c.id = mi.comment_id) vci
-                WHERE vender_id IN (" . implode(',', $vender_ids) . ")
-                GROUP BY vender_id
-        ORDER BY vci.vender_id  ASC");
+        return DB::select("SELECT vender_id,SUM(user_rating) AS total_ratings,AVG(user_rating) AS average_ratings FROM
+                (SELECT  DISTINCT (mi.comment_id) as comment_id,v.id as vender_id ,c.user_rating
+                    FROM venders v
+                    INNER JOIN menu_categories mc ON v.id = mc.vender_id
+                    INNER JOIN menu_items i ON mc.id = i.menu_category_id
+                    INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id
+                    INNER JOIN comments c ON c.id = mi.comment_id) vci
+                    WHERE vender_id IN (" . implode(',', $vender_ids) . ")
+                    GROUP BY vender_id
+                ORDER BY vci.vender_id  ASC");
 
     }
 
@@ -140,5 +141,10 @@ class Vender extends Model
 //                GROUP BY vender_id
 //                ORDER BY `vender_id` ASC;
 
+
+
+    public function scopeFilter($query,$filters) {
+        return $query->when($filters['type'] ?? false,fn($query2) => $query2->where('vender_type_id',$filters['type']));
+    }
 
 }

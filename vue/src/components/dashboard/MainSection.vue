@@ -1,6 +1,8 @@
 <template>
     <section class="main-section container">
-        <vender-cards :venders="venders" />
+        <loading v-if="vendersLoading" />
+        <vender-cards v-else :venders="venders" />
+
         <aside class="filters">
             <div class="aside-card">
                 <h2 class="categories-heading">همه دسته‌بندی‌ها</h2>
@@ -12,12 +14,12 @@
                     >
                         <figure dir="rtl">
                             <img
-                                :src="categoriesAssetsLink(category.src)"
+                                :src="category.image"
                                 alt=""
                                 class="category-img"
                             />
                             <figcaption class="category-caption">
-                                {{ category.caption }}
+                                {{ category.name }}
                             </figcaption>
                         </figure>
                     </li>
@@ -42,23 +44,24 @@ import VenderCards from "./VenderCards.vue";
 import { ref } from "@vue/reactivity";
 import axiosClient from "../../../axios";
 import { useRoute } from "vue-router";
+import Loading from "../Loading.vue";
 const route = useRoute();
-const categoriesAssetsLink = (file) => {
-    const categories = "src/assets/images/categories/";
-    return categories + file;
+const categories = ref([]);
+
+const fetchCategories = async () => {
+    const res = await axiosClient.get("api/categories");
+    categories.value = res.data.categories;
+    console.log(res.data);
 };
-const categories = [
-    { src: "pizza.png", caption: "فست فود" },
-    { src: "aash.png", caption: "ایرانی" },
-    { src: "kabab.png", caption: "کباب" },
-    { src: "salad.png", caption: "سالاد" },
-    { src: "daryayi.png", caption: "دریایی" },
-    { src: "sooshi.png", caption: "بین‌الملل" },
-];
+
+fetchCategories();
 
 const venders = ref({});
+const vendersLoading = ref(true);
 const fetchVender = async (params) => {
+    vendersLoading.value = true;
     const res = await axiosClient.get("api/venders", { params });
+    vendersLoading.value = false;
     venders.value = res.data.venders;
     console.log(res.data);
 };
