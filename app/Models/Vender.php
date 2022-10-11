@@ -144,7 +144,7 @@ class Vender extends Model
 
 
     public function scopeFilter($query,$filters) {
-        return $query->when($filters['type'] ?? false,fn($query2) => $query2->where('vender_type_id',$filters['type']));
+        return $query->where('vender_type_id',$filters['type'] ?? VenderType::first('id')->id);
     }
 
 }

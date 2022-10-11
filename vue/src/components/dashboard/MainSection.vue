@@ -4,26 +4,8 @@
         <vender-cards v-else :venders="venders" />
 
         <aside class="filters">
-            <div class="aside-card">
-                <h2 class="categories-heading">همه دسته‌بندی‌ها</h2>
-                <ul v-if="categories.length" class="categories">
-                    <li
-                        class="category"
-                        v-for="category in categories"
-                        :key="category.caption"
-                    >
-                        <figure dir="rtl">
-                            <img
-                                :src="category.image"
-                                alt=""
-                                class="category-img"
-                            />
-                            <figcaption class="category-caption">
-                                {{ category.name }}
-                            </figcaption>
-                        </figure>
-                    </li>
-                </ul>
+            <div v-if="categories.length" class="aside-card">
+                <category-filter :categories="categories" />
             </div>
             <div class="aside-card">
                 <h2 class="price-filter-heading">کلاس قیمتی</h2>
@@ -37,19 +19,22 @@
 </template>
 
 <script setup>
-import PriceFilter from "./PriceFilter.vue";
-import SpecialFilter from "./SpecialFilter.vue";
+import PriceFilter from "./filters/PriceFilter.vue";
+import SpecialFilter from "./filters/SpecialFilter.vue";
 import { watch } from "@vue/runtime-core";
 import VenderCards from "./VenderCards.vue";
 import { ref } from "@vue/reactivity";
 import axiosClient from "../../../axios";
 import { useRoute } from "vue-router";
 import Loading from "../Loading.vue";
+import CategoryFilter from "./filters/categoryFilter.vue";
 const route = useRoute();
 const categories = ref([]);
 
 const fetchCategories = async () => {
-    const res = await axiosClient.get("api/categories");
+    const res = await axiosClient.get("api/categories", {
+        params: { type: route.query.type },
+    });
     categories.value = res.data.categories;
     console.log(res.data);
 };
@@ -58,9 +43,9 @@ fetchCategories();
 
 const venders = ref({});
 const vendersLoading = ref(true);
-const fetchVender = async (params) => {
+const fetchVender = async () => {
     vendersLoading.value = true;
-    const res = await axiosClient.get("api/venders", { params });
+    const res = await axiosClient.get("api/venders", { params: route.query });
     vendersLoading.value = false;
     venders.value = res.data.venders;
     console.log(res.data);
@@ -70,7 +55,8 @@ fetchVender(route.query);
 watch(
     () => route.query,
     (toQuery, previousQuery) => {
-        fetchVender(toQuery);
+        if (toQuery.type !== previousQuery.type) fetchCategories();
+        fetchVender();
     }
 );
 </script>
@@ -101,38 +87,6 @@ watch(
         rgba(0, 0, 0, 0.05) 0px 2px 8px -2px;
     padding: 1em 1.5em;
     border-radius: 0.7em;
-}
-.categories-heading {
-    direction: rtl;
-    background-color: rgba(58, 61, 66, 0.06);
-    font-size: 1.15rem;
-    padding: 0.6em 0.5em;
-    border-radius: 0.5em;
-    color: rgb(58, 61, 66);
-}
-
-.categories {
-    margin-top: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
-}
-.category {
-    figure {
-        display: flex;
-        align-items: center;
-        gap: 1em;
-        text-align: right;
-    }
-    .category-img {
-        width: 35px;
-        aspect-ratio: 1;
-    }
-
-    .category-caption {
-        color: rgb(58, 61, 66);
-        font-size: 1.1rem;
-    }
 }
 
 .price-filter-heading {

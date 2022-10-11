@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('sub_category_vender', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vender_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('sub_category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
 
-            $table->index(['vender_id','category_id']);
+            $table->index(['vender_id','sub_category_id']);
         });
     }
 

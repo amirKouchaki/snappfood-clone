@@ -17,7 +17,7 @@ class VenderController extends Controller
      */
     public function index(IndexDashboardRequest $request)
     {
-//        dd($request['type']);
+
         $filters = $request->validated();
         $limit = 20;
         $venders = Vender::filter($filters)->paginate($limit);
@@ -28,8 +28,8 @@ class VenderController extends Controller
            $venderRatings = Vender::getAllRatings($venderIds);
 
         return ['venders' => $venders->each( static function ($vender,$index)  use ($venderRatings){
-            $vender->total_ratings = $venderRatings[$index]->total_ratings;
-            $vender->average_ratings = $venderRatings[$index]->average_ratings;
+            $vender->total_ratings = number_format($venderRatings[$index]->total_ratings);
+            $vender->average_ratings = number_format($venderRatings[$index]->average_ratings,1);
         })];
     }
 

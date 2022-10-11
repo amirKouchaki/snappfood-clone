@@ -49,12 +49,13 @@ const specialFilters = ref([
     position: relative;
     display: inline-block;
     width: 40px;
-    aspect-ratio: 1.7;
+    aspect-ratio: 1.65;
     background-color: rgba(58, 61, 66, 0.06);
     border-radius: 0.7em;
     user-select: none;
     cursor: pointer;
     transition: background-color 500ms ease-in-out;
+    height: min-content;
     &::after {
         content: "";
         position: absolute;

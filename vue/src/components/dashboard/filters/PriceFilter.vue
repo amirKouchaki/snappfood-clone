@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { activate } from "../../composables/activation";
+import { activate } from "../../../composables/activation";
 const filters = ref([
     { text: "همه", isActive: true },
     { text: "اقتصادی", isActive: false },
@@ -35,7 +35,7 @@ const filters = ref([
 .price-filter {
     flex-grow: 1;
     text-align: center;
-    padding-block: 0.5em;
+    padding-block: 0.25em;
     border-radius: 0.6em;
     color: rgb(58, 61, 66);
     user-select: none;

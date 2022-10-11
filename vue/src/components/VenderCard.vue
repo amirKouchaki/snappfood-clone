@@ -1,7 +1,7 @@
 <template>
     <a class="vendor-card">
         <div class="vender-coupon" v-if="vender.has_coupon">
-            <p class="hello">{{ vender.coupons[0].body }}</p>
+            <p class="coupon">{{ vender.coupons[0].body }}</p>
 
             <svg
                 width="16"
@@ -131,7 +131,7 @@ const props = defineProps({ vender: Object });
     }
 }
 
-.hello {
+.coupon {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -196,6 +196,7 @@ const props = defineProps({ vender: Object });
     margin-bottom: 0.4em;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 0.5em;
 }
 

@@ -151,6 +151,7 @@ document.addEventListener("click", (e) => {
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
+    align-items: center;
     gap: 0.6em;
     padding: 0.6em 1em;
     flex: 1 1 50%;

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\VenderType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Ybazli\Faker\Facades\Faker;
 
@@ -19,7 +20,8 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => Faker::word(),
-            'image' => $this->faker->imageUrl()
+            'image' => $this->faker->imageUrl(),
+            'vender_type_id' => VenderType::factory()
         ];
     }
 }

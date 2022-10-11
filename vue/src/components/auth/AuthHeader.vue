@@ -240,6 +240,7 @@ hr {
 
 .reg-orders-container {
     display: flex;
+    align-items: center;
     gap: 1em;
     padding-left: 0.7em;
 }
@@ -256,8 +257,8 @@ hr {
     margin-inline: auto;
     gap: 0.5em;
     align-items: center;
-    padding: 0.8em 1.2em;
-    width: clamp(15em, 20vw + 10em, 28em);
+    padding: 0.6em 1.2em;
+    width: clamp(15em, 20vw + 10em, 33em);
     background-color: rgb(235, 237, 240);
     border-radius: 0.8em;
 }

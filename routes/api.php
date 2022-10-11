@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//TODO validate request params more eloquently
+
 Route::get('/user',function () {
     return auth()->user();
 })->middleware('auth:sanctum');
@@ -36,6 +38,10 @@ Route::controller(\App\Http\Controllers\VenderController::class)->group(function
     Route::get('/venders','index');
 });
 
-Route::get('categories',function () {
-    return ['categories' => Category::all()];
+Route::get('/categories',function () {
+    return ['categories' => Category::with('subCategories')->where('vender_type_id',\request('type'))->get()];
+});
+
+Route::get('/subCategories/{subCategory}', static function (\App\Models\SubCategory $subCategory) {
+    return $subCategory;
 });
