@@ -24,7 +24,10 @@ class IndexDashboardRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['numeric','exists:vender_types,id']
+            'type' => ['numeric','exists:vender_types,id'],
+            'category' => ['numeric','exists:categories,id'],
+            'subCategory' => ['numeric','exists:categories,id'],
+            'search' => ['string','max:100']
         ];
     }
 }

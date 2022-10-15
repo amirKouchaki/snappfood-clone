@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -57,7 +58,7 @@ class SubCategorySeeder extends Seeder
 
         ];
 
-        SubCategory::factory()->createMany($subCategories);
+        Category::factory()->createMany($subCategories);
     }
 
 

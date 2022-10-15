@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IndexDashboardRequest;
+use App\Models\Category;
 use App\Models\Vender;
+use App\Models\VenderType;
+use App\Services\VenderFilterSerivce;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,19 +21,16 @@ class VenderController extends Controller
     public function index(IndexDashboardRequest $request)
     {
 
-        $filters = $request->validated();
-        $limit = 20;
-        $venders = Vender::filter($filters)->paginate($limit);
+        $filters = collect($request->validated());
 
-        $venderIds = array_column($venders->toArray()['data'],'id');
-        $venderRatings = [];
-        if($venderIds)
-           $venderRatings = Vender::getAllRatings($venderIds);
 
-        return ['venders' => $venders->each( static function ($vender,$index)  use ($venderRatings){
-            $vender->total_ratings = number_format($venderRatings[$index]->total_ratings);
-            $vender->average_ratings = number_format($venderRatings[$index]->average_ratings,1);
-        })];
+        $venders = (new VenderFilterSerivce($filters,20))
+            ->getFilteredCategories()
+            ->getFilteredVenders()
+            ->getVendersRatings()
+            ->mergeVendersAndTheirRatings();
+
+        return ['venders' => $venders];
     }
 
     /**

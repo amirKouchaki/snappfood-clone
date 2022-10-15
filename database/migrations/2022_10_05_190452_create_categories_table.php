@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name',50);
             $table->string('image',255);
-            $table->foreignId('vender_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('vender_type_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
 
             $table->index('id');

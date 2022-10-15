@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sub_category_vender', function (Blueprint $table) {
+        Schema::create('category_vender', function (Blueprint $table) {
+            //TODO: only add category_id of either subCategories or the main categories that do not have any subCategories
             $table->id();
             $table->foreignId('vender_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('sub_category_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
 
 
-            $table->index(['vender_id','sub_category_id']);
+            $table->index(['vender_id','category_id']);
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_category_vender');
+        Schema::dropIfExists('category_vender');
     }
 };

@@ -82,7 +82,7 @@
             <span class="delivery-fee">{{
                 vender.delivery_fee == 0 ? "رایگان" : vender.delivery_fee
             }}</span
-            ><span v-if="vender.delivery_fee !== 0">تومان</span>
+            ><span v-if="vender.delivery_fee != 0">تومان</span>
         </button>
     </a>
 </template>

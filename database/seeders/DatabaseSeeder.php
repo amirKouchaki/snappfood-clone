@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             MenuItemSeeder::class,
             CategorySeeder::class,
             SubCategorySeeder::class,
+            CategoryVenderSeeder::class,
             CommentMenuItemSeeder::class,
         ]);
 

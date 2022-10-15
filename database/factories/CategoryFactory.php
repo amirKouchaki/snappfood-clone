@@ -21,7 +21,8 @@ class CategoryFactory extends Factory
         return [
             'name' => Faker::word(),
             'image' => $this->faker->imageUrl(),
-            'vender_type_id' => VenderType::factory()
+            'category_id' => null,
+            'vender_type_id' => null
         ];
     }
 }

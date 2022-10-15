@@ -68,16 +68,6 @@ const selectedCategory = ref(-1);
 const categoryHeader = ref(null);
 const route = useRoute();
 const router = useRouter();
-const showAllCategories = () => {
-    categoriesOnDisplay.value = props.categories;
-    showingSubCategory.value = false;
-    selectedCategory.value = -1;
-    categoryHeader.value = null;
-    let query = Object.assign({}, route.query);
-    delete query.category;
-    delete query.subCategory;
-    router.replace({ query });
-};
 const findCategory = (id) => {
     return props.categories.find((category) => {
         return category.id == id;
@@ -140,7 +130,7 @@ watch(
 <style lang="scss" scoped>
 .selectedCategory {
     background-color: rgba(58, 61, 66, 0.06);
-    font-weight: bold;
+    font-weight: bold !important;
 }
 .categories-heading {
     direction: rtl;

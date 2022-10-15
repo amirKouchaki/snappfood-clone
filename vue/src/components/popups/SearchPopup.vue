@@ -1,6 +1,13 @@
 <template>
     <div class="popup-card search-bar" ref="modal">
-        <input ref="input" class="search-input" type="text" />
+        <input
+            :value="searchInput"
+            ref="input"
+            class="search-input"
+            type="text"
+            @input="$emit('update:searchInput', $event.target.value)"
+            @keydown.enter.prevent="filterBySearch()"
+        />
         <svg
             class="search-icon"
             width="17"
@@ -18,10 +25,26 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
+import { useRoute, useRouter } from "vue-router";
 
-const props = defineProps({ closePopup: Function });
+const props = defineProps({
+    closePopup: Function,
+    searchInput: String,
+});
+const emits = defineEmits(["update:searchInput"]);
+const router = useRouter();
+const route = useRoute();
 const modal = ref("");
 const input = ref("");
+
+const filterBySearch = async (event) => {
+    let query = { type: route.query.type, search: props.searchInput };
+    if (props.searchInput == "") delete query.search;
+    await router.push({
+        query: Object.assign({}, query),
+    });
+    props.closePopup();
+};
 
 onMounted(() => {
     input.value.focus();

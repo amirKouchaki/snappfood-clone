@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\VenderController;
 use App\Models\Category;
+use App\Models\VenderType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,14 +36,12 @@ Route::controller(AuthenticationController::class)->group(function(){
     Route::post('/verifyRegisterWithPass','verifyRegisterWithPass');
 });
 
-Route::controller(\App\Http\Controllers\VenderController::class)->group(function(){
+Route::controller(VenderController::class)->group(function(){
     Route::get('/venders','index');
 });
 
 Route::get('/categories',function () {
-    return ['categories' => Category::with('subCategories')->where('vender_type_id',\request('type'))->get()];
+    return ['categories' => Category::allCategoriesWithTheirSubCategoriesOfThatType(\request('type') ?? VenderType::first()->id)->get()];
 });
 
-Route::get('/subCategories/{subCategory}', static function (\App\Models\SubCategory $subCategory) {
-    return $subCategory;
-});
+

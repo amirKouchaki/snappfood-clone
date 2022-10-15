@@ -32,5 +32,7 @@ const props = defineProps(["venders"]);
     display: grid;
     align-items: stretch;
     gap: 2em;
+    direction: rtl;
+    flex-grow: 10;
 }
 </style>

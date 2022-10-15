@@ -10,4 +10,9 @@ class VenderType extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+
+    public function venders(){
+        return $this->hasMany(Vender::class);
+    }
 }
