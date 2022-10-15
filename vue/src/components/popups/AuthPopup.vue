@@ -1,5 +1,5 @@
 <template>
-    <div class="popup-card" ref="modal">
+    <div class="popup-card" v-popup-click-away="closePopup">
         <div v-if="firstPage">
             <div class="popup-header">
                 <svg
@@ -194,7 +194,6 @@ import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
-const modal = ref("");
 const email = ref("");
 const firstPage = ref(true);
 const secondPageWithPass = ref(false);
@@ -207,16 +206,6 @@ const props = defineProps({ closePopup: Function });
 
 const goBackToFirstPage = () => (firstPage.value = true);
 
-document.addEventListener("click", (e) => {
-    const popup = document.getElementsByClassName("popup")[0];
-    if (
-        modal.value !== null &&
-        modal.value.contains(e.target) === false &&
-        e.target === popup
-    ) {
-        props.closePopup();
-    }
-});
 const editEmail = () => {
     email.value = "";
     goBackToFirstPage();

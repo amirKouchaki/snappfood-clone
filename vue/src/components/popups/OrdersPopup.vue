@@ -1,5 +1,5 @@
 <template>
-    <section class="popup-card" ref="modal">
+    <section class="popup-card" v-popup-click-away="closePopup">
         <h2 class="order-popup-heading">سفارش‌های پیشین</h2>
         <div class="orders-list">
             <article class="order" v-for="one in four" :key="one">
@@ -59,17 +59,6 @@ import { ref } from "@vue/reactivity";
 const props = defineProps({ closePopup: Function });
 const four = [1, 2, 3, 4];
 const fullW = ref(false);
-const modal = ref("");
-document.addEventListener("click", (e) => {
-    const popup = document.getElementsByClassName("popup")[0];
-    if (
-        modal.value !== null &&
-        modal.value.contains(e.target) === false &&
-        e.target === popup
-    ) {
-        props.closePopup();
-    }
-});
 </script>
 
 <style lang="scss" scoped>

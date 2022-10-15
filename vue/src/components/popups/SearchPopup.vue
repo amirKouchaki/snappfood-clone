@@ -1,8 +1,8 @@
 <template>
-    <div class="popup-card search-bar" ref="modal">
+    <div class="popup-card search-bar" v-popup-click-away="closePopup">
         <input
             :value="searchInput"
-            ref="input"
+            v-focus
             class="search-input"
             type="text"
             @input="$emit('update:searchInput', $event.target.value)"
@@ -34,8 +34,6 @@ const props = defineProps({
 const emits = defineEmits(["update:searchInput"]);
 const router = useRouter();
 const route = useRoute();
-const modal = ref("");
-const input = ref("");
 
 const filterBySearch = async (event) => {
     let query = { type: route.query.type, search: props.searchInput };
@@ -45,21 +43,6 @@ const filterBySearch = async (event) => {
     });
     props.closePopup();
 };
-
-onMounted(() => {
-    input.value.focus();
-});
-
-document.addEventListener("click", (e) => {
-    const popup = document.getElementsByClassName("popup")[0];
-    if (
-        modal.value !== null &&
-        modal.value.contains(e.target) === false &&
-        e.target === popup
-    ) {
-        props.closePopup();
-    }
-});
 </script>
 
 <style lang="scss" scoped>

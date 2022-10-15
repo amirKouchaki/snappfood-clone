@@ -26,8 +26,28 @@ library.add(
     faEdit
 );
 
-const app = createApp(App)
-    .use(router)
+const app = createApp(App);
+
+app.use(router)
     .use(store)
     .component("font-awesome-icon", FontAwesomeIcon)
     .mount("#app");
+
+app.directive("focus", {
+    mounted: (el) => el.focus(),
+});
+
+app.directive("popup-click-away", {
+    mounted: (el, bindings) => {
+        document.addEventListener("click", (e) => {
+            const popup = document.getElementsByClassName("popup")[0];
+            if (
+                el !== null &&
+                el.contains(e.target) === false &&
+                e.target === popup
+            ) {
+                bindings.value();
+            }
+        });
+    },
+});
