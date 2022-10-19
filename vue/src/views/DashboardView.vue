@@ -9,9 +9,9 @@ import { useStore } from "vuex";
 import MainSection from "../components/dashboard/MainSection.vue";
 const router = useRouter();
 const store = useStore();
-const logout = () => {
-    store.commit("logout");
-    router.push({ name: "landingPage" });
+const logout = async () => {
+    const res = await store.dispatch("logout");
+    if (res.status == 200) router.push({ name: "landingPage" });
 };
 </script>
 

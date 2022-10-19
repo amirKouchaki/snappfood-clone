@@ -6,4 +6,16 @@ const axiosClient = axios.create({
     withCredentials: true,
 });
 
+axiosClient.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response.status == 401 || error.response.status == 419) {
+            localStorage.removeItem("authenticated");
+            window.location.reload();
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export default axiosClient;

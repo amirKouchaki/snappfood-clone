@@ -31,12 +31,12 @@ Route::group(['middleware'=>'auth:sanctum'],function () {
 
 Route::controller(AuthenticationController::class)->group(function(){
     Route::post('/register','register');
-    Route::post('/verifyRegisterWithCode','verifyRegisterWithCode');
-    Route::post('/verifyRegisterWithPass','verifyRegisterWithPass');
+    Route::post('/loginWithPassword','loginWithPassword');
+    Route::post('/loginWithCode','loginWithCode');
 });
 
 Route::controller(VenderController::class)->group(function(){
-    Route::get('/venders','index');
+    Route::get('/venders','index')->middleware('auth:sanctum');
 });
 
 Route::get('/categories',function () {

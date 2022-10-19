@@ -6,7 +6,7 @@
             class="search-input"
             type="text"
             @input="$emit('update:searchInput', $event.target.value)"
-            @keydown.enter.prevent="filterBySearch()"
+            @keydown.enter.prevent="filterBySearch"
         />
         <svg
             class="search-icon"
@@ -26,7 +26,6 @@
 import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-
 const props = defineProps({
     closePopup: Function,
     searchInput: String,

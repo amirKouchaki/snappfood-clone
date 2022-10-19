@@ -1,5 +1,8 @@
 <template>
-    <a class="vendor-card">
+    <RouterLink
+        :to="{ name: 'venders.show', params: { vender: vender.id } }"
+        class="vendor-card"
+    >
         <div class="vender-coupon" v-if="vender.has_coupon">
             <p class="coupon">{{ vender.coupons[0].body }}</p>
 
@@ -84,7 +87,7 @@
             }}</span
             ><span v-if="vender.delivery_fee != 0">تومان</span>
         </button>
-    </a>
+    </RouterLink>
 </template>
 
 <script setup>

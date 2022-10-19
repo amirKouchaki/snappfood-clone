@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Mailable
+class User extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

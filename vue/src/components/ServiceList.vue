@@ -19,7 +19,7 @@
 import { useRoute } from "vue-router";
 const route = useRoute();
 const serviceAssetLink = (file) => {
-    const serviceAsset = "src/assets/images/service-list/";
+    const serviceAsset = "/src/assets/images/service-list/";
     return serviceAsset.concat(file);
 };
 const serviceList = [

@@ -250,7 +250,7 @@ h1 {
     border: none;
     border-radius: 0.4em;
     color: white;
-    padding: 0.7em 0.4em;
+    padding: 0.4em 0.4em;
     font-weight: bold;
     font-size: 1.15rem;
 
@@ -307,12 +307,16 @@ h1 {
 }
 
 .address-select-btn {
-    width: 3.5em;
+    width: 3.9em;
     aspect-ratio: 1;
     border-radius: 50%;
     border: none;
     background-color: rgb(255, 0, 166);
-    margin-left: -0.6em;
+    margin-left: -0.7em;
+
+    svg {
+        margin-top: 0.3em;
+    }
 }
 
 .service-list {

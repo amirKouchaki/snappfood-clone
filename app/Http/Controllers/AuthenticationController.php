@@ -27,7 +27,9 @@ class AuthenticationController extends Controller
          * @var app\models\user $user
          */
         $user = \App\Models\User::where('email',$email)->first();
-        //TODO:  when user and password already exists
+
+
+
         if($user?->hasPassword()) {
             return new JsonResponse([
                 'success' =>true,
@@ -64,7 +66,7 @@ class AuthenticationController extends Controller
         ]);
     }
 
-    public function verifyRegisterWithCode(VerifyRegisterWithCodeRequest $request): JsonResponse
+    public function loginWithCode(VerifyRegisterWithCodeRequest $request): JsonResponse
     {
         $data = $request->validated();
         $emailVerification = EmailVerification::where('email',$data['email'])->first();
@@ -104,14 +106,14 @@ class AuthenticationController extends Controller
 
     }
 
-    public function verifyRegisterWithPass(VerifyRegisterWithPassRequest $request): JsonResponse
+    public function loginWithPassword(VerifyRegisterWithPassRequest $request): JsonResponse
     {
         ['email' => $email,'password' => $password] =  $request->validated();
         $user = \App\Models\User::where('email',$email)->first();
         if(!$user->hasPassword()) {
             return new JsonResponse(['loginSuccess' => false,'errors' => ['No password found for this user.']], 422);
         }
-        //makes unnecessary sql query to get the user again
+
         if(!Auth::attempt(['email' => $email,'password' => $password ])){
             return  new JsonResponse(['loginSuccess' => false,'errors' => ['Password is not valid.']],422);
         }
@@ -125,14 +127,14 @@ class AuthenticationController extends Controller
     }
 
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         /**
          * @var \app\models\User $user
          */
-        $user = $request->user();
 
-        return new JsonResponse([
-            'success' => 'true'
-        ]);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $request->session()->regenerateToken();
     }
 }

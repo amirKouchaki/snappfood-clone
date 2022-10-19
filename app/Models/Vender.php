@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Vender extends Model
@@ -73,7 +74,7 @@ class Vender extends Model
                 GROUP BY vender_id;');
     }
 
-    public static function getAllRatings($vender_ids = [])
+    public static function getAllRatings($vender_ids = []): Collection
     {
 
             return DB::table(DB::raw('( SELECT  DISTINCT (mi.comment_id) as comment_id,v.id as vender_id ,c.user_rating
@@ -88,15 +89,7 @@ class Vender extends Model
                 ->selectRaw(DB::raw('vender_id,SUM(user_rating) AS total_ratings,AVG(user_rating) AS average_ratings'))
                 ->get();
 
-
-
     }
 
-
-
-    public function scopeFilter($query,$filters) {
-        $query->where('vender_type_id',$filters['type'] ?? VenderType::first('id')->id);
-
-    }
 
 }

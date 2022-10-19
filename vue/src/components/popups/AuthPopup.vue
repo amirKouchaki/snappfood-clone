@@ -123,7 +123,8 @@
 
             <form
                 autocomplete="off"
-                @submit.prevent="verifyRegisterWithPass"
+                @submit.prevent="loginWithPassword"
+                @keypress.enter="loginWithPassword"
                 action="#"
             >
                 <p class="form-group">
@@ -163,7 +164,11 @@
                 اصلاح ایمیل
             </span>
 
-            <form @submit.prevent="verifyRegisterWithCode" action="#">
+            <form
+                @submit.prevent="loginWithCode"
+                @keypress.enter="loginWithCode"
+                action="#"
+            >
                 <p class="form-group">
                     <input
                         v-model="verificationCode"
@@ -217,8 +222,8 @@ const sendRegisterEmail = async () => {
     if (res.data.userPassExists) secondPageWithPass.value = true;
 };
 
-const verifyRegisterWithPass = async () => {
-    const res = await store.dispatch("verifyRegisterWithPass", {
+const loginWithPassword = async () => {
+    const res = await store.dispatch("loginWithPassword", {
         email: email.value,
         password: password.value,
     });
@@ -229,8 +234,8 @@ const verifyRegisterWithPass = async () => {
     }
 };
 
-const verifyRegisterWithCode = async () => {
-    const res = await store.dispatch("verifyRegisterWithCode", {
+const loginWithCode = async () => {
+    const res = await store.dispatch("loginWithCode", {
         email: email.value,
         verification_code: verificationCode.value,
     });

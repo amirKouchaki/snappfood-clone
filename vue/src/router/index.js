@@ -3,33 +3,40 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPageView from "./../views/LandingPageView.vue";
 import GuestLayout from "./../layouts/GuestLayout.vue";
 import DashboardView from "./../views/DashboardView.vue";
+import RestaurantMenuView from "./../views/RestaurantMenuView.vue";
 import AuthLayout from "./../layouts/AuthLayout.vue";
 import store from "../store";
+import middleware from "./middlewares";
+
 const routes = [
     {
         path: "/",
         name: "landingPage",
         component: LandingPageView,
-        meta: { isGuest: true },
+        beforeEnter: middleware.guest,
     },
     {
         path: "/guest",
         name: "guest",
         component: GuestLayout,
-        meta: { isGuest: true },
+        beforeEnter: middleware.guest,
         children: [],
     },
     {
         path: "/auth",
         name: "auth",
         component: AuthLayout,
-        meta: { requiresAuth: true },
+        beforeEnter: middleware.auth,
         children: [
             {
                 path: "/dashboard",
                 name: "dashboard",
-
                 component: DashboardView,
+            },
+            {
+                path: "/venders/:vender",
+                name: "venders.show",
+                component: RestaurantMenuView,
             },
         ],
     },
@@ -41,11 +48,8 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    await store.restored;
-    if (to.meta.requiresAuth && !store.state.user)
-        next({ name: "landingPage" });
-    else if (to.meta.isGuest && store.state.user) next({ name: "dashboard" });
-    else next();
+    // await store.restored;
+    next();
 });
 
 export default router;

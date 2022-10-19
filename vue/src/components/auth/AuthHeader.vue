@@ -175,6 +175,7 @@
 import ServiceList from "../ServiceList.vue";
 import PopUp from "../PopUp.vue";
 import SearchPopup from "../popups/SearchPopup.vue";
+import { watch } from "@vue/runtime-core";
 import { ref } from "@vue/reactivity";
 import RegisterPopup from "../popups/RegisterPopup.vue";
 import OrdersPopup from "../popups/OrdersPopup.vue";
@@ -209,6 +210,13 @@ const closeOrdersPopup = () => {
     showOrdersPopup.value = false;
     document.body.classList.remove("ov-hid");
 };
+
+watch(
+    () => route.query.search,
+    (newS, prevS) => {
+        searchInput.value = newS ?? "";
+    }
+);
 </script>
 
 <style lang="scss" scoped>
