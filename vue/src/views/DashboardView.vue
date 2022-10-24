@@ -1,9 +1,11 @@
 <template>
+    <service-list />
     <main-section />
     <button @click="logout">logout</button>
 </template>
 
 <script setup>
+import ServiceList from "../components/ServiceList.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import MainSection from "../components/dashboard/MainSection.vue";

@@ -142,7 +142,6 @@
             ></router-link>
         </div>
         <hr />
-        <service-list />
     </header>
     <pop-up
         v-if="showSearchPopup"
@@ -172,7 +171,6 @@
 </template>
 
 <script setup>
-import ServiceList from "../ServiceList.vue";
 import PopUp from "../PopUp.vue";
 import SearchPopup from "../popups/SearchPopup.vue";
 import { watch } from "@vue/runtime-core";

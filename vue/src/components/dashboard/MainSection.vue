@@ -21,6 +21,7 @@
 <script setup>
 import PriceFilter from "./filters/PriceFilter.vue";
 import SpecialFilter from "./filters/SpecialFilter.vue";
+import ServiceList from "../ServiceList.vue";
 import { watch } from "@vue/runtime-core";
 import VenderCards from "./VenderCards.vue";
 import { ref } from "@vue/reactivity";
@@ -71,7 +72,7 @@ watch(
 
 .filters {
     position: sticky;
-    top: 13em;
+    top: 6em;
     display: flex;
     flex-direction: column;
     flex-grow: 1;

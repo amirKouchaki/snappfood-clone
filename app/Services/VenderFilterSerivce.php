@@ -65,7 +65,7 @@ class VenderFilterSerivce
         return $this->venders->each( function ($vender)  {
             $venderRating = $this->vendersRatings->where('vender_id', $vender->id)->first();
             $vender->total_ratings = number_format($venderRating->total_ratings);
-            $vender->average_ratings = number_format($venderRating->average_ratings, 1);
+            $vender->average_ratings = (int)($venderRating->average_ratings * 10) /10;
             $vender->delivery_fee = number_format($vender->delivery_fee);
         });
     }
