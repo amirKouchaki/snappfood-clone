@@ -199,6 +199,11 @@ const openRegisterPopup = () => {
     document.body.classList.add("ov-hid");
 };
 
+const closeRegisterPopup = () => {
+    showRegisterPopup.value = false;
+    document.body.classList.remove("ov-hid");
+};
+
 const openOrdersPopup = () => {
     showOrdersPopup.value = true;
     document.body.classList.add("ov-hid");

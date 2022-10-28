@@ -180,7 +180,8 @@ const props = defineProps({ vender: Object });
     width: 100%;
     height: 100%;
     border: 1.5px solid rgba(58, 61, 66, 0.06);
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 
 .vender-title {

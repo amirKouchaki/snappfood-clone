@@ -2,10 +2,13 @@ import axiosClient from "../../../axios";
 
 const AuthenticationModule = {
     state: { user: null, authenticated: localStorage.getItem("authenticated") },
-    getters: { authenticated: (state) => state.authenticated },
+    getters: {
+        authenticated: (state) => state.authenticated,
+        user: (state) => state.user ?? null,
+    },
     mutations: {
         setAuthUser: (state, payload) => {
-            state.user = payload.user;
+            state.user = payload;
             state.authenticated = true;
             localStorage.setItem("authenticated", true);
         },
@@ -38,14 +41,8 @@ const AuthenticationModule = {
             return res;
         },
         getUser: async ({ commit }) => {
-            await axiosClient
-                .get("/api/user")
-                .then((res) => {
-                    commit("setAuthUser", res.data);
-                })
-                .catch((err) => {
-                    throw err.response;
-                });
+            const res = await axiosClient.get("/api/user");
+            commit("setAuthUser", res.data);
         },
         logout: async ({ commit }) => {
             const res = await axiosClient.post("api/logout");

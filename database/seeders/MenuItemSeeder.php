@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use App\Models\MenuCategory;
 use App\Models\MenuItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Http;
 
 class MenuItemSeeder extends Seeder
 {
@@ -17,7 +19,9 @@ class MenuItemSeeder extends Seeder
      */
     public function run()
     {
+
         $menuCategories = MenuCategory::all();
-        $menuCategories->each( fn ($menuCategory) => $menuCategory->menuItems()->saveMany(MenuItem::factory(random_int(2,5))->make(['menu_category_id' => $menuCategory->id])));
+        $menuCategories->each(fn($menuCategory) => $menuCategory->menuItems()->saveMany(MenuItem::factory(random_int(2, 5))->make([
+            'menu_category_id' => $menuCategory->id])));
     }
 }

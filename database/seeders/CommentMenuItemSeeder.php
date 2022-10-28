@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Vender;
 use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Http;
 
 class CommentMenuItemSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class CommentMenuItemSeeder extends Seeder
     {
         Vender::all(['id'])->each(function ($vender) {
             $menu = $vender->menu(['id']);
-            $random = random_int(3000,3500);
+            $random = random_int(30,35);
             for ($j = 0; $j < $random; $j++) {
                 $items_for_comment_count = random_int(1, 5);
                 $menu_item_ids = [];

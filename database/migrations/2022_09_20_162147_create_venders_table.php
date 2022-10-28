@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('venders', function (Blueprint $table) {
             $table->id();
             $table->string('title',100);
-            $table->string('title_image',255);
-            $table->string('background_image',255);
+            $table->longText('title_image');
+            $table->longText('background_image');
             $table->string('description',255);
             $table->string('address',400);
             $table->boolean('is_express');

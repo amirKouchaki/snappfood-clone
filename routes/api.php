@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 //TODO validate request params more eloquently
 
-Route::get('/user',function () {
+Route::get('/user', static function () {
     return auth()->user();
 })->middleware('auth:sanctum');
 

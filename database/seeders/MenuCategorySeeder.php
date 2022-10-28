@@ -18,6 +18,11 @@ class MenuCategorySeeder extends Seeder
     {
         $venders = Vender::all();
         //TODO : find a shorter way to do this if possible
-        $venders->each(fn ($vender) => $vender->menuCategories()->saveMany(MenuCategory::factory(7)->make(['vender_id' => $vender->id])));
+        $venders->each(fn ($vender) => $vender
+            ->menuCategories()
+            ->saveMany(
+                MenuCategory::factory(7)
+                ->make(['vender_id' => $vender->id])
+            ));
     }
 }

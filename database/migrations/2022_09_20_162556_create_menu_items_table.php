@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title',50);
             $table->longText('description');
+            $table->longText('image');
             $table->unsignedBigInteger('price');
             $table->unsignedTinyInteger('discount')->default(0);
             $table->unsignedInteger('in_stock');
