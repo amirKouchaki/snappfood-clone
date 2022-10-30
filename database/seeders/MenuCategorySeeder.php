@@ -13,6 +13,7 @@ class MenuCategorySeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws \Exception
      */
     public function run()
     {
@@ -21,7 +22,7 @@ class MenuCategorySeeder extends Seeder
         $venders->each(fn ($vender) => $vender
             ->menuCategories()
             ->saveMany(
-                MenuCategory::factory(7)
+                MenuCategory::factory(random_int(7,15))
                 ->make(['vender_id' => $vender->id])
             ));
     }

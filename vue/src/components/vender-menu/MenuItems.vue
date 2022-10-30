@@ -2,41 +2,46 @@
     <div v-if="menu.length" class="menu-items">
         <section
             class="menu-item"
-            v-for="(menuItem, index) in menu"
-            :key="index"
-            :id="menuItem.categoryId"
+            v-for="menuCategory in menu"
+            :key="menuCategory.id"
+            :id="menuCategory.id"
         >
             <h2 class="menu-item-title">
-                {{ menuItem.category }}
+                {{ menuCategory.name }}
             </h2>
             <div class="products">
-                <article class="product" v-for="product in menuItem.products">
+                <article
+                    class="product"
+                    v-for="menuItem in menuCategory.menu_items"
+                >
                     <section class="product-details">
-                        <h3 class="product-title">{{ product.title }}</h3>
+                        <h3 class="product-title">{{ menuItem.title }}</h3>
                         <p class="product-description">
-                            {{ product.description }}
+                            {{ menuItem.description }}
                         </p>
                     </section>
-                    <img
-                        class="product-img"
-                        :src="product.images[0].imageSrc"
-                        alt=""
-                    />
+                    <img class="product-img" :src="menuItem.image" alt="" />
                     <div class="purchase">
                         <div class="final-price">
                             <span
                                 class="discount-percent"
-                                v-if="product.discountRatio"
-                                >%{{ product.discountRatio }}</span
+                                v-if="menuItem.discount"
+                                >%{{ menuItem.discount }}</span
                             >
                             <div class="discounted-price">
                                 <span
-                                    class="discount-amount"
-                                    v-if="product.discount"
-                                    >{{ product.discount }}</span
+                                    class="before-discount"
+                                    v-if="menuItem.discount"
+                                    >{{ menuItem.price }}</span
                                 >
                                 <p class="price">
-                                    <span>{{ product.price }}</span
+                                    <span>{{
+                                        menuItem.price -
+                                        calculateDiscountAmount(
+                                            menuItem.price,
+                                            menuItem.discount
+                                        )
+                                    }}</span
                                     ><span class="currency">تومان</span>
                                 </p>
                             </div>
@@ -50,12 +55,14 @@
 </template>
 
 <script setup>
+import { computed } from "@vue/reactivity";
 import { onMounted } from "vue";
 import { activate } from "../../composables/activation";
 
 const props = defineProps(["menu"]);
 const emits = defineEmits(["activate", "deActivate"]);
-
+const calculateDiscountAmount = (price, discount) =>
+    Math.ceil((price * discount) / 100);
 onMounted(() => {
     const sections = document.querySelectorAll("section[id]");
     window.addEventListener("scroll", navHighlighter);
@@ -98,6 +105,7 @@ onMounted(() => {
     border-bottom: 1px solid rgb(235, 237, 240);
     color: rgb(83, 86, 92);
     font-size: 1.05rem;
+    margin-top: 2em;
     padding-block: 0.6em;
 }
 
@@ -136,6 +144,8 @@ onMounted(() => {
     border-radius: 0.55em;
     grid-area: product-img;
     justify-self: left;
+    object-fit: cover;
+    object-position: center;
 }
 
 .product-title {
@@ -204,10 +214,10 @@ onMounted(() => {
     border-radius: 0.2em;
     letter-spacing: 1.5px;
 }
-.discount-amount {
+.before-discount {
     color: rgb(166, 170, 173);
     text-decoration: line-through;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .final-price {
@@ -220,6 +230,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    font-size: 1.1rem;
     column-gap: 0.3em;
     margin-top: -0.35em;
 }

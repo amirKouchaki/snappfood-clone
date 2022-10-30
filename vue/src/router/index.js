@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPageView from "./../views/LandingPageView.vue";
 import GuestLayout from "./../layouts/GuestLayout.vue";
 import DashboardView from "./../views/DashboardView.vue";
-import RestaurantMenuView from "./../views/RestaurantMenuView.vue";
+import VenderMenuView from "./../views/VenderMenuView.vue";
 import AuthLayout from "./../layouts/AuthLayout.vue";
 import store from "../store";
 import middleware from "./middlewares";
@@ -36,7 +36,7 @@ const routes = [
             {
                 path: "/venders/:vender",
                 name: "venders.show",
-                component: RestaurantMenuView,
+                component: VenderMenuView,
             },
         ],
     },

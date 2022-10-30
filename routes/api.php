@@ -23,8 +23,12 @@ Route::get('/user', static function () {
     return auth()->user();
 })->middleware('auth:sanctum');
 
-Route::group(['middleware'=>'auth:sanctum'],function () {
+Route::group(['middleware'=>'auth:sanctum'], static function () {
     Route::post('/logout',[AuthenticationController::class,'logout']);
+    Route::get('/categories', static function () {
+        return ['categories' => Category::allCategoriesWithTheirSubCategoriesOfThatType(\request('type') ?? VenderType::first()->id)->get()];
+    });
+
 
 });
 
@@ -37,10 +41,9 @@ Route::controller(AuthenticationController::class)->group(function(){
 
 Route::controller(VenderController::class)->group(function(){
     Route::get('/venders','index')->middleware('auth:sanctum');
+    Route::get('/venders/{vender}','show')->middleware('auth:sanctum');
 });
 
-Route::get('/categories',function () {
-    return ['categories' => Category::allCategoriesWithTheirSubCategoriesOfThatType(\request('type') ?? VenderType::first()->id)->get()];
-});
+
 
 

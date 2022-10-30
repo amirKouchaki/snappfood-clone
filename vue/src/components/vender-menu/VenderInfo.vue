@@ -2,20 +2,14 @@
     <aside>
         <header class="vender-header">
             <div class="featured-wrapper">
-                <img
-                    class="featured-img"
-                    src="https://cdn.snappfood.ir/media/cache/vendor_logo/uploads/images/vendors/logos/5e425b4fde54b.jpg"
-                    alt=""
-                />
+                <img class="featured-img" :src="vender.title_image" alt="" />
             </div>
             <div class="vender-info-wrapper">
                 <div class="comments-count-rating">
                     <span class="comments-count"
-                        >(نظر{{ vender.textCommentCount }})</span
+                        >(نظر{{ vender.total_ratings }})</span
                     >
-                    <span class="rating">{{
-                        (vender.rating / 2).toFixed(1)
-                    }}</span>
+                    <span class="rating">{{ vender.average_ratings }}</span>
                     <svg
                         width="12"
                         height="12"
@@ -49,22 +43,24 @@
             </svg>
         </button>
 
-        <nav class="menu-items" v-if="menu.length">
+        <nav class="menu-items" v-if="vender.menu_categories.length">
             <a
                 class="menu-item"
-                v-for="(menuItem, index) in menu"
-                :key="index"
-                :href="'#' + menuItem.categoryId"
-                :id="'scrollable' + menuItem.categoryId"
+                v-for="menuCategory in vender.menu_categories"
+                :key="menuCategory.id"
+                :href="'#' + menuCategory.id"
+                :id="'scrollable' + menuCategory.id"
             >
-                {{ menuItem.category }}
+                {{ menuCategory.name }}
             </a>
         </nav>
     </aside>
 </template>
 
 <script setup>
-const props = defineProps(["vender", "menu"]);
+import { computed } from "@vue/runtime-core";
+
+const props = defineProps(["vender"]);
 </script>
 
 <style lang="scss" scoped>
@@ -92,7 +88,8 @@ const props = defineProps(["vender", "menu"]);
     width: 100%;
     height: 100%;
     border: 1.5px solid rgba(58, 61, 66, 0.06);
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 
 .vender-info-wrapper {

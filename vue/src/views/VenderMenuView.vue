@@ -1,49 +1,49 @@
 <template>
-    <section class="main-section" v-if="data">
+    <section class="main-section" v-if="vender">
         <div class="container">
             <div class="menu">
-                <restaurant-info
-                    :vender="data.vender"
-                    :menu="data.menus"
-                    class="stick-to-top restaurant-info"
+                <vender-info
+                    :vender="vender"
+                    class="stick-to-top vender-info"
                 />
                 <menu-items
                     @activate="activate"
                     @deActivate="deActivate"
-                    :menu="data.menus"
+                    :menu="vender.menu_categories"
                     class="menu-items"
                 />
             </div>
             <delivery
-                :delivery-fee="data.vender.deliveryFee"
+                :delivery-fee="vender.delivery_fee"
                 class="stick-to-top delivery"
             />
         </div>
     </section>
-    <button @click="onLci()">hello</button>
 </template>
 
 <script setup>
-import RestaurantInfo from "../components/restaurant-menu/RestaurantInfo.vue";
-import MenuItems from "../components/restaurant-menu/MenuItems.vue";
-import Delivery from "../components/restaurant-menu/Delivery.vue";
-import { onMounted, ref } from "vue";
+import venderInfo from "../components/vender-menu/VenderInfo.vue";
+import MenuItems from "../components/vender-menu/MenuItems.vue";
+import Delivery from "../components/vender-menu/Delivery.vue";
+import { ref } from "vue";
+import axios from "axios";
+import axiosClient from "../../axios";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
+const vender = ref(null);
 const data = ref(null);
-const fetchData = async () => {
-    const res = await fetch("/src/database/data.json");
-    const json = await res.json();
-    data.value = json.data;
-};
-
+const fetchData = async () =>
+    (vender.value = await (
+        await axiosClient.get(`api/venders/${route.params.vender}`)
+    ).data);
 fetchData();
 
-const activate = (id) => {
+const activate = (id) =>
     document.getElementById(`scrollable${id}`).classList.add("active");
-};
-const deActivate = (id) => {
+
+const deActivate = (id) =>
     document.getElementById(`scrollable${id}`).classList.remove("active");
-};
 </script>
 
 <style lang="scss" scoped>
@@ -74,11 +74,11 @@ const deActivate = (id) => {
     grid-template-columns: subgrid;
     grid-auto-rows: min-content;
     grid-template-areas:
-        "res-info res-info res-info res-info"
+        "ven-info ven-info ven-info ven-info"
         "menu-items menu-items menu-items menu-items";
 }
-.restaurant-info {
-    grid-area: res-info;
+.vender-info {
+    grid-area: ven-info;
     min-width: 10em;
     height: fit-content;
 }
@@ -96,10 +96,10 @@ const deActivate = (id) => {
     }
 
     .menu {
-        grid-template-areas: "menu-items menu-items res-info res-info";
+        grid-template-areas: "menu-items menu-items ven-info ven-info";
     }
 
-    .restaurant-info {
+    .vender-info {
         position: sticky;
         top: 6em;
     }
@@ -116,7 +116,7 @@ const deActivate = (id) => {
     }
 
     .menu-items {
-        grid-template-areas: "menu-items menu-items res-info";
+        grid-template-areas: "menu-items menu-items ven-info";
     }
 }
 </style>

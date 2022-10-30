@@ -36,7 +36,7 @@ class Vender extends Model
     {
         return DB::table('menu_items')
             ->whereIn('menu_category_id', function ($query) {
-                $query->select('id')->from('menu_categories')->where('vender_id', $this->id)->get();
+                $query->select('id')->from('menu_categories')->where('vender_id', $this->id);
             })->select($columns)->get();
     }
 
@@ -83,7 +83,7 @@ class Vender extends Model
                     INNER JOIN menu_items i ON mc.id = i.menu_category_id
                     INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id
                     INNER JOIN comments c ON c.id = mi.comment_id ) AS vci'))
-                ->whereIn('vender_id',$vender_ids)
+                ->whereIn('vender_id',collect($vender_ids))
                 ->groupBy('vender_id')
                 ->orderBy('vci.vender_id')
                 ->selectRaw(DB::raw('vender_id,SUM(user_rating) AS total_ratings,AVG(user_rating) AS average_ratings'))

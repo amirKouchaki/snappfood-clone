@@ -56,7 +56,7 @@ class VenderFilterSerivce
 
         $venderIds = array_column($this->venders->toArray(), 'id');
         if ($venderIds)
-            $this->vendersRatings = collect(Vender::getAllRatings($venderIds));
+            $this->vendersRatings = Vender::getAllRatings($venderIds);
         return $this;
     }
 

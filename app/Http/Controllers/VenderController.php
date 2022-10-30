@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IndexDashboardRequest;
-use App\Models\Category;
 use App\Models\Vender;
-use App\Models\VenderType;
 use App\Services\VenderFilterSerivce;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class VenderController extends Controller
 {
@@ -47,12 +43,15 @@ class VenderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Vender
      */
-    public function show($id)
+    public function show(Vender $vender)
     {
-        //
+        $ratings = Vender::getAllRatings($vender->id);
+        $vender->load('menuCategories.menuItems');
+        $vender->total_ratings = $ratings[0]->total_ratings;
+        $vender->average_ratings = (int)($ratings[0]->average_ratings * 10) /10;
+        return $vender;
     }
 
     /**
