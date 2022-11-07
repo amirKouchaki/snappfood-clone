@@ -27,7 +27,7 @@
                 <h2 class="vender-title">{{ vender.title }}</h2>
             </div>
         </header>
-        <button class="reviews-and-comments">
+        <button class="reviews-and-comments" @click="openVenderInfoPopup()">
             اطلاعات و نظرات
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -54,12 +54,32 @@
                 {{ menuCategory.name }}
             </a>
         </nav>
+        <pop-up
+            v-if="showVenderInfoPopup"
+            @closePopup="closeVenderInfoPopup()"
+            v-slot="slotProps"
+        >
+            <vender-info-popup
+                :closePopup="slotProps.closePopup"
+                :vender="vender"
+            />
+        </pop-up>
     </aside>
 </template>
 
 <script setup>
-import { computed } from "@vue/runtime-core";
-
+import { ref } from "vue";
+import PopUp from "../PopUp.vue";
+import VenderInfoPopup from "../popups/venders/VenderInfoPopup.vue";
+const showVenderInfoPopup = ref(false);
+const openVenderInfoPopup = () => {
+    showVenderInfoPopup.value = true;
+    document.body.classList.add("ov-hid");
+};
+const closeVenderInfoPopup = () => {
+    showVenderInfoPopup.value = false;
+    document.body.classList.remove("ov-hid");
+};
 const props = defineProps(["vender"]);
 </script>
 

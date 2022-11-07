@@ -230,7 +230,7 @@ header {
     left: 0;
     right: 0;
     top: 0;
-    z-index: 999;
+    z-index: 4;
     background-color: white;
 }
 

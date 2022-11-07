@@ -123,8 +123,7 @@
 
             <form
                 autocomplete="off"
-                @submit.prevent="loginWithPassword"
-                @keypress.enter="loginWithPassword"
+                @submit.enter.prevent="loginWithPassword"
                 action="#"
             >
                 <p class="form-group">

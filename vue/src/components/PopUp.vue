@@ -20,7 +20,7 @@ const closePopup = () => {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1000;
+    z-index: 999;
     background-color: rgba($color: #000000, $alpha: 0.3);
     grid-column: auto;
     user-select: none;

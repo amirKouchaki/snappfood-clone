@@ -51,28 +51,6 @@ class Vender extends Model
         return $this->belongsTo(VenderType::class);
     }
 
-    public function commentCount()
-    {
-        //TODO: merge with menu
-        return DB::table('comment_menu_item')
-            ->selectRaw('COUNT(DISTINCT comment_id) as comment_count')
-            ->whereIn('menu_item_id', function ($query) {
-                $query->select('id')->from('menu_items')->whereIn('menu_category_id', function ($query) {
-                    $query->select('id')->from('menu_categories')->where('vender_id', $this->id);
-                });
-            })->get()[0]->comment_count;
-    }
-
-    public static function getAllCommentsCounts()
-    {
-        return DB::select('SELECT COUNT(DISTINCT comment_id) AS comment_count,vender_id
-                FROM (SELECT v.id AS vender_id,mc.id AS menu_category_id,i.id AS menu_item_id,mi.comment_id
-                FROM venders v
-                INNER JOIN menu_categories mc ON v.id = mc.vender_id
-                INNER JOIN menu_items i ON mc.id = i.menu_category_id
-                INNER JOIN comment_menu_item mi  ON mi.menu_item_id = i.id ) vci
-                GROUP BY vender_id;');
-    }
 
     public static function getAllRatings($vender_ids = []): Collection
     {
@@ -91,5 +69,57 @@ class Vender extends Model
 
     }
 
+//    public static function getUserRatingStats($venderId){
+//        $table = DB::raw('(
+//            SELECT DISTINCT
+//        (mi.comment_id) AS comment_id,
+//                v.id AS vender_id,
+//                c.user_rating
+//            FROM
+//                venders v
+//            INNER JOIN menu_categories mc ON
+//                v.id = mc.vender_id
+//            INNER JOIN menu_items i ON
+//                mc.id = i.menu_category_id
+//            INNER JOIN comment_menu_item mi ON
+//                mi.menu_item_id = i.id
+//            INNER JOIN comments c ON
+//                c.id = mi.comment_id
+//            ) AS vci');
+//        $sumQuery = DB::table($table) ->where('vender_id','=',$venderId)->selectRaw("'SUM' user_rating,SUM(COUNT(user_rating)) AS");
+//        return DB::table($table)
+//            ->where('vender_id','=',$venderId)
+//            ->groupBy('user_rating')
+//            ->orderBy('user_rating')
+//            ->selectRaw('user_rating,COUNT(user_rating) AS star_count')
+//            ->union()
+//            ->get();
+//    }
+
+//SELECT
+//user_rating,
+//COUNT(user_rating) AS star_count
+//FROM
+//(
+//SELECT DISTINCT
+//(mi.comment_id) AS comment_id,
+//v.id AS vender_id,
+//c.user_rating
+//FROM
+//venders v
+//INNER JOIN menu_categories mc ON
+//v.id = mc.vender_id
+//INNER JOIN menu_items i ON
+//mc.id = i.menu_category_id
+//INNER JOIN comment_menu_item mi ON
+//mi.menu_item_id = i.id
+//INNER JOIN comments c ON
+//c.id = mi.comment_id
+//
+//) AS vci WHERE vender_id = 1
+//GROUP BY
+//user_rating
+//ORDER BY
+//`vci`.`user_rating` ASC;
 
 }

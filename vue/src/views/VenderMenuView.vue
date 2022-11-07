@@ -26,13 +26,11 @@ import venderInfo from "../components/vender-menu/VenderInfo.vue";
 import MenuItems from "../components/vender-menu/MenuItems.vue";
 import Delivery from "../components/vender-menu/Delivery.vue";
 import { ref } from "vue";
-import axios from "axios";
 import axiosClient from "../../axios";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
 const vender = ref(null);
-const data = ref(null);
 const fetchData = async () =>
     (vender.value = await (
         await axiosClient.get(`api/venders/${route.params.vender}`)
@@ -102,6 +100,7 @@ const deActivate = (id) =>
     .vender-info {
         position: sticky;
         top: 6em;
+        z-index: 5;
     }
 
     .delivery {

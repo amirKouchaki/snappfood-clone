@@ -23,25 +23,26 @@ Route::get('/user', static function () {
     return auth()->user();
 })->middleware('auth:sanctum');
 
-Route::group(['middleware'=>'auth:sanctum'], static function () {
-    Route::post('/logout',[AuthenticationController::class,'logout']);
+Route::group(['middleware' => 'auth:sanctum'], static function () {
+    Route::post('/logout', [AuthenticationController::class, 'logout']);
     Route::get('/categories', static function () {
         return ['categories' => Category::allCategoriesWithTheirSubCategoriesOfThatType(\request('type') ?? VenderType::first()->id)->get()];
     });
-
-
+//    Route::get('/getUserRating/{vender}', static function ($venderId) {
+//        return ['rating_stats' => \App\Models\Vender::getUserRatingStats($venderId)];
+//    });
 });
 
 
-Route::controller(AuthenticationController::class)->group(function(){
-    Route::post('/register','register');
-    Route::post('/loginWithPassword','loginWithPassword');
-    Route::post('/loginWithCode','loginWithCode');
+Route::controller(AuthenticationController::class)->group(function () {
+    Route::post('/register', 'register');
+    Route::post('/loginWithPassword', 'loginWithPassword');
+    Route::post('/loginWithCode', 'loginWithCode');
 });
 
-Route::controller(VenderController::class)->group(function(){
-    Route::get('/venders','index')->middleware('auth:sanctum');
-    Route::get('/venders/{vender}','show')->middleware('auth:sanctum');
+Route::controller(VenderController::class)->group(function () {
+    Route::get('/venders', 'index')->middleware('auth:sanctum');
+    Route::get('/venders/{vender}', 'show')->middleware('auth:sanctum');
 });
 
 

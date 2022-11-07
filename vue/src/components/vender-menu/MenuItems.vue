@@ -105,7 +105,6 @@ onMounted(() => {
     border-bottom: 1px solid rgb(235, 237, 240);
     color: rgb(83, 86, 92);
     font-size: 1.05rem;
-    margin-top: 2em;
     padding-block: 0.6em;
 }
 
@@ -138,9 +137,9 @@ onMounted(() => {
 }
 
 .product-img {
-    max-width: 120px;
-    width: 120px;
-    height: 120px;
+    max-width: 110px;
+    width: 110px;
+    height: 110px;
     border-radius: 0.55em;
     grid-area: product-img;
     justify-self: left;
