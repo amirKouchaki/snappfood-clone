@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('day_vender', function (Blueprint $table) {
             $table->id();
-            $table->time('opens_at');
-            $table->time('closes_at');
             $table->foreignId('vender_id')->constrained()->cascadeOnDelete();
             $table->foreignId('day_id')->constrained()->cascadeOnDelete();
+            $table->time('opens_at');
+            $table->time('closes_at');
             $table->timestamps();
 
             $table->index('id');

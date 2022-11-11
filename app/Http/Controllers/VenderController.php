@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IndexDashboardRequest;
+use App\Models\Comment;
 use App\Models\Vender;
 use App\Services\VenderFilterSerivce;
 use Illuminate\Http\Request;
@@ -47,10 +48,21 @@ class VenderController extends Controller
      */
     public function show(Vender $vender)
     {
-        $ratings = Vender::getAllRatings($vender->id);
-        $vender->load('menuCategories.menuItems');
-        $vender->total_ratings = $ratings[0]->total_ratings;
-        $vender->average_ratings = (int)($ratings[0]->average_ratings * 10) /10;
+        //TODO : validation ig...
+
+        $commentsCount = Comment::commentsCountFor($vender->id);
+        $comments = Comment::commentsFor($vender->id);
+        $ratingCounts = Vender::getAllRatings($vender->id);
+        $ratingCounts[0]->average_ratings = (int)($ratingCounts[0]->average_ratings * 10) /10;
+        $ratingStats = Vender::getUserRatingStats($vender->id);
+
+        $vender->comments_count = $commentsCount;
+        $vender->load(['menuCategories.menuItems','schedule']);
+        $vender->comments = $comments;
+        $vender->rating_counts = $ratingCounts;
+        $vender->rating_stats = $ratingStats;
+
+
         return $vender;
     }
 

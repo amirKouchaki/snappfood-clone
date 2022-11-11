@@ -20,6 +20,8 @@ return new class extends Migration
             $table->longText('verification_code');
             $table->timestamp('expire_date');
             $table->timestamps();
+
+            $table->index('id');
         });
     }
 

@@ -1,29 +1,31 @@
 <template>
     <article class="comment">
         <header class="comment-header">
-            <h3 class="reviewer">
-                {{ decodeURIComponent(comment.sender) }}
-            </h3>
+            <h3 class="reviewer">{{ comment.sender.name }}</h3>
             <time class="review-date">{{
-                decodeURIComponent(comment.createdDate)
+                new Date(comment.created_at).toLocaleDateString()
             }}</time>
             <div class="user-rating">
                 <Star s-color="#FFCE00" />
-                {{ comment.rating / 2 }}
+                {{ comment.user_rating }}
             </div>
         </header>
         <div class="comment-main">
             <div class="comment-body">
                 <p class="comment-text">
-                    {{ decodeURIComponent(comment.commentText) }}
+                    {{ comment.body }}
                 </p>
                 <div class="foods">
                     <p
                         class="food"
-                        v-for="(food, index) in comment.foods"
+                        v-for="(food, index) in comment.menu_items"
                         :key="index"
                     >
-                        {{ decodeURIComponent(food.title) }}
+                        {{
+                            food.title === ""
+                                ? "سیب زمینی سرخ کرده"
+                                : food.title
+                        }}
                     </p>
                 </div>
             </div>
@@ -71,11 +73,11 @@ const props = defineProps(["comment"]);
 }
 
 .comment-header {
-    flex: 1 1 20%;
+    flex: 1;
 }
 
 .comment-main {
-    flex: 1 1 calc(80% - 1em);
+    flex: 4;
 }
 
 .comment-text {
@@ -84,11 +86,14 @@ const props = defineProps(["comment"]);
 
 .foods {
     display: flex;
+    flex-wrap: wrap;
     gap: 1em;
     margin-block: 1em;
 }
 
 .food {
+    display: flex;
+    align-items: center;
     background-color: rgb(235, 237, 240);
     padding: 0.4em 0.6em;
     border-radius: 0.4em;

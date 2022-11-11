@@ -103,16 +103,27 @@
                     <h2 class="vgd-title">ساعت کاری</h2>
                     <div class="open-hours">
                         <p class="vgd-data">
-                            <span class="open-status">باز</span> امروز از ساعت
-                            ۱۱:۰۰ تا ۲۳:۲۹
+                            <span
+                                class="open-status"
+                                :class="[!openStatus.isOpen ? 'close' : 'open']"
+                                >{{ openStatus.status }}</span
+                            >
+                            امروز از ساعت
+                            <span class="opening-time">{{
+                                convertTime(todaysSchedule.work_hours.opens_at)
+                            }}</span
+                            >تا<span class="closing-time">{{
+                                convertTime(todaysSchedule.work_hours.closes_at)
+                            }}</span>
                         </p>
                         <svg
-                            @click="showScheduleFun()"
+                            @click="showSchedule = !showSchedule"
                             xmlns="http://www.w3.org/2000/svg"
                             width="1rem"
                             height="0.5625rem"
                             viewBox="0 0 16 9"
                             fill="#676A70"
+                            class="open-schedule-icon"
                         >
                             <path
                                 d="M0.705389 0.294621C1.09466 -0.0946516 1.72569 -0.0949955 2.11539 0.293852L8 6.17001L13.8846 0.293853C14.2743 -0.0949953 14.9053 -0.0946514 15.2946 0.294621C15.6842 0.684194 15.6842 1.31582 15.2946 1.70539L8.70711 8.2929C8.31659 8.68342 7.68342 8.68342 7.2929 8.2929L0.705389 1.70539C0.315816 1.31582 0.315816 0.684194 0.705389 0.294621Z"
@@ -121,23 +132,35 @@
                     </div>
                 </div>
             </div>
-            <Schedule :class="{ show: showSchedule }" />
+            <Schedule
+                :schedule="vender.schedule"
+                :class="{ show: showSchedule }"
+            />
         </header>
         <div class="comments-stats">
             <div class="rating-stats">
                 <div class="full-ratings">
                     <div class="rating">
-                        <span class="rating-text"> 4.4</span>
+                        <span class="rating-text">
+                            {{ vender.rating_counts[0].average_ratings }}</span
+                        >
                         <star :count="1" s-color="#ffce00" sScale="1.6" />
                     </div>
-                    <p class="rating-counts">
-                        از مجموع <strong>۹,۱۹۲</strong>امتیاز و
-                        <strong>۱,۴۵۳</strong>نظر
+                    <p class="rating-counts" v-if="vender.rating_counts">
+                        از مجموع
+                        <strong>{{
+                            vender.rating_counts[0].total_ratings
+                        }}</strong
+                        >امتیاز و
+                        <strong>{{
+                            vender.comments_count[0].comments_count
+                        }}</strong
+                        >نظر
                     </p>
                 </div>
 
                 <div class="progress-bars">
-                    <ProgressBars />
+                    <ProgressBars :rating_stats="vender.rating_stats" />
                 </div>
             </div>
             <section class="comments">
@@ -145,8 +168,8 @@
                     <h3 class="comments-heading">نظرات کاربران</h3>
                 </header>
                 <Customer-comment
-                    v-if="comments?.length"
-                    v-for="(comment, index) in comments"
+                    v-if="vender.comments?.length"
+                    v-for="(comment, index) in vender.comments"
                     :key="index"
                     :comment="comment"
                 />
@@ -157,36 +180,33 @@
 
 <script setup>
 import { ref } from "vue";
-
+import { convertTime } from "../../../composables/convertTime";
 import ProgressBars from "../../ProgressBars.vue";
 import Schedule from "../../Schedule.vue";
 import Star from "../../Star.vue";
 import CustomerComment from "../../CustomerComment.vue";
-import axiosClient from "../../../../axios";
-import { useRoute } from "vue-router";
+import moment from "moment";
+import { computed } from "@vue/reactivity";
 const props = defineProps({ closePopup: Function, vender: Object });
 const showSchedule = ref(false);
-const comments = ref(null);
-const route = useRoute();
-const fetchComments = async () => {
-    const res = await fetch("/src/database/data.json");
-    //const res2 = await axiosClient.get(
-    //    `api/getUserRating/${route.params.vender}`
-    //);
-    //console.log(res2.data);
-    const data = await res.json();
-    comments.value = data.comments;
-};
-fetchComments();
-const showScheduleFun = () => {
-    if (showSchedule.value) {
-        showSchedule.value = false;
-        document.body.classList.remove("ov-hid");
-    } else {
-        showSchedule.value = true;
-        document.body.classList.add("ov-hid");
-    }
-};
+
+const todaysSchedule = computed(() => {
+    const today = ((moment().weekday() + 1) % 7) + 1;
+    return props.vender.schedule.find((schedule) => schedule.id == today);
+});
+
+const openStatus = computed(() => {
+    const open = { isOpen: true, status: "باز" };
+    const close = { isOpen: false, status: "بسته" };
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const now = hours + ":" + minutes;
+    const opensAt = convertTime(todaysSchedule.value.work_hours.opens_at);
+    const closesAt = convertTime(todaysSchedule.value.work_hours.closes_at);
+    console.log(now);
+    return now > opensAt && now < closesAt ? open : close;
+});
 </script>
 
 <style lang="scss" scoped>
@@ -276,8 +296,11 @@ const showScheduleFun = () => {
     }
 }
 
-.open-status {
+.open {
     color: rgb(0, 184, 98);
+}
+.close {
+    color: red;
 }
 
 .rating-stats {
@@ -346,5 +369,9 @@ const showScheduleFun = () => {
     color: rgb(83, 86, 92);
     font-size: 1.32rem;
     font-weight: bolder;
+}
+
+.open-schedule-icon {
+    cursor: pointer;
 }
 </style>

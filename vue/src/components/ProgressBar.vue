@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-const props = defineProps({ pWidth: String, pColor: String });
+const props = defineProps({ pWidth: Number, pColor: String });
 </script>
 
 <style lang="scss" scoped>

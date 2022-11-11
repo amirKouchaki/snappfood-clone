@@ -28,9 +28,6 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::get('/categories', static function () {
         return ['categories' => Category::allCategoriesWithTheirSubCategoriesOfThatType(\request('type') ?? VenderType::first()->id)->get()];
     });
-//    Route::get('/getUserRating/{vender}', static function ($venderId) {
-//        return ['rating_stats' => \App\Models\Vender::getUserRatingStats($venderId)];
-//    });
 });
 
 

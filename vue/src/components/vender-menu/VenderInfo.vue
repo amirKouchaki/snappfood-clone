@@ -7,9 +7,13 @@
             <div class="vender-info-wrapper">
                 <div class="comments-count-rating">
                     <span class="comments-count"
-                        >(نظر{{ vender.total_ratings }})</span
+                        >(نظر{{
+                            vender.comments_count[0].comments_count
+                        }})</span
                     >
-                    <span class="rating">{{ vender.average_ratings }}</span>
+                    <span class="rating">{{
+                        vender.rating_counts[0].average_ratings
+                    }}</span>
                     <svg
                         width="12"
                         height="12"

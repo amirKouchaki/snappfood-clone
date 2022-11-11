@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->longText('body');
             $table->unsignedInteger('user_rating');
-            //TODO: add user_id to comment
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
             $table->index('id');

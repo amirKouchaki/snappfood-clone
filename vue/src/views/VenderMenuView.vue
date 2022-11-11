@@ -31,10 +31,13 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const vender = ref(null);
-const fetchData = async () =>
-    (vender.value = await (
+const fetchData = async () => {
+    vender.value = await (
         await axiosClient.get(`api/venders/${route.params.vender}`)
-    ).data);
+    ).data;
+    console.log(vender.value);
+};
+
 fetchData();
 
 const activate = (id) =>

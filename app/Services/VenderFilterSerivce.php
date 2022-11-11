@@ -23,9 +23,9 @@ class VenderFilterSerivce
         if ($this->filters->has('subCategory')) {
             $this->categoryIds = collect(Category::find($this->filters['subCategory'])->id);
         } else if ($this->filters->has('category')) {
-            $category = Category::with('subCategories')->where('id', $this->filters['category'])->first() ?? Category::factory()->create();
+            $category = Category::with('subCategories')->where('id', $this->filters['category'])->first() ?? [];
 
-            $this->categoryIds = collect([$category->id])
+            $this->categoryIds = collect($category->id)
                 ->merge(array_column($category->subCategories->toArray(), 'id'));
         }
 

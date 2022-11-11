@@ -1,29 +1,39 @@
 <template>
-    <div class="rating-bars">
-        <star :count="5" />
-        <progress-bar p-width="50" p-color="rgb(2, 137, 10)" />
-    </div>
-    <div class="rating-bars">
-        <star :count="4" />
-        <progress-bar p-width="30" p-color="rgb(104, 195, 66)" />
-    </div>
-    <div class="rating-bars">
-        <star :count="3" />
-        <progress-bar p-width="40" p-color="rgb(171, 232, 35)" />
-    </div>
-    <div class="rating-bars">
-        <star :count="2" />
-        <progress-bar p-width="100" p-color="rgb(254, 157, 7)" />
-    </div>
-    <div class="rating-bars">
-        <star :count="1" />
-        <progress-bar p-width="12" p-color="rgb(254, 57, 0)" />
+    <div
+        class="rating-bars"
+        v-if="
+            userRatingStats?.length &&
+            userRatingStats.length == statsColors.length
+        "
+        v-for="(stat, index) in userRatingStats"
+        :key="index"
+    >
+        <star :count="Number(stat.user_rating)" />
+        <progress-bar
+            :p-width="Math.ceil((stat.star_count / sumStats.star_count) * 100)"
+            :p-color="statsColors[index]"
+        />
     </div>
 </template>
 
 <script setup>
 import Star from "./Star.vue";
 import ProgressBar from "./ProgressBar.vue";
+import { computed } from "@vue/reactivity";
+const statsColors = [
+    "rgb(2, 137, 10)",
+    "rgb(104, 195, 66)",
+    "rgb(171, 232, 35)",
+    "rgb(254, 157, 7)",
+    "rgb(254, 57, 0)",
+];
+const props = defineProps(["rating_stats"]);
+const sumStats = computed(() =>
+    props.rating_stats?.find((stat) => stat.user_rating === "SUM")
+);
+const userRatingStats = computed(() =>
+    props.rating_stats?.filter((stat) => stat.user_rating != "SUM")
+);
 </script>
 
 <style lang="scss" scoped>
