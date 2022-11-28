@@ -43,11 +43,13 @@ const AuthenticationModule = {
         getUser: async ({ commit }) => {
             const res = await axiosClient.get("/api/user");
             commit("setAuthUser", res.data);
+            return res.data;
         },
         logout: async ({ commit }) => {
             const res = await axiosClient.post("api/logout");
-
-            if (res.status == 200) commit("logout");
+            if (res.status == 200) {
+                commit("logout");
+            }
             return res;
         },
     },

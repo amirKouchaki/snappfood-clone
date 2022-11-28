@@ -39,7 +39,10 @@
             ><img src="https://snappfood.ir/static/images/referral-menu.svg" />
             <p>دعوت از دوستان</p></router-link
         >
-        <router-link class="register-row" :to="{ name: 'dashboard' }"
+        <router-link
+            @click.prevent="logout()"
+            class="register-row"
+            :to="{ name: 'dashboard' }"
             ><svg
                 width="1.125rem"
                 height="1.125rem"
@@ -60,13 +63,18 @@
 import { ref } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import axiosClient from "../../../axios";
 
 const store = useStore();
+const router = useRouter();
 const props = defineProps({ closePopup: Function });
+store.dispatch("getUser");
 const user = computed(() => store.getters.user);
-console.log(user.value);
-if (!user.value) store.dispatch("getUser");
+const logout = async () => {
+    await store.dispatch("logout");
+    router.push({ name: "landingPage" });
+};
 </script>
 
 <style lang="scss" scoped>
